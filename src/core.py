@@ -1,6 +1,8 @@
 import tiles
 import queue
 
+TABLESIZE = 10;
+
 class Core:
     size = TABLESIZE
     def __init__(self, size):
