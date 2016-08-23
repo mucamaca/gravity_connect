@@ -1,0 +1,25 @@
+l=[[0 for i in range(TABLESIZE)] for j in TABLESIZE]
+
+class Token:
+    def __init__
+
+class Tile:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.full = 0
+        
+    @property
+    def where_is(self):
+        if self.x < self.y and self.x + self.y < TABLESIZE:
+            return (-1, 0)
+        elif self.x < self.y and self.x + self.y > TABLESIZE:
+            return (0, 1)
+        elif self.x > self.y and self.x + self.y < TABLESIZE:
+            return (1, 0)
+        elif self.x > self.y and self.x + self.y > TABLESIZE:
+            return (0, -1)
+        else:
+            return (0, 0)
+    def move(self):
+        
