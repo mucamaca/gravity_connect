@@ -5,7 +5,7 @@ TABLESIZE = 10;
 
 class Core:
     size = TABLESIZE
-    def __init__(self, size):
+    def __init__(self):
         self.grid = [[tiles.Square(i, j) for i in range(self.size)] for j in range(self.size)]
         self.token_to_move = None
         

@@ -5,7 +5,7 @@ class GUI:
 		self.core = core
 		self.height, self.width = 400, 400
 		self.grid = self.height / 10
-		self.root = self.game.window
+		self.root = tk.TK()
 
 		turn = True
 
@@ -23,8 +23,6 @@ class GUI:
 			if not self.end:
 				mouse_row = int(event.y // self.grid) 
 				mouse_col = int(event.x // self.grid)
-
-
 
 				if self.valid_coords(mouse_row, mmouse_col):
 					self.drop_token(mouse_row, mouse_col)
@@ -55,15 +53,21 @@ class GUI:
 
 					if grid[i][j].is_special:
 						colour = "gray"
+					self.map.create_rectangle(i * self.grid, j * self.grid,
+                        (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
 
 		def drop_token(self, x, y):
 			pos = core.get_token_pos(x, y)
 			move_dir = core.grid[x][y].where_is()
 			while (x != pos[0]) and (y != pos[1]):
 				if turn:
-					grid[x][y]: colour = "blue"
+					colour = "blue"
 				else:
-					grid[x][y]: colour = "red"
+					colour = "red"
+
+				self.map.create_rectangle(i * self.grid, j * self.grid,
+                    (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
+
 				x += move_dir[0]
 				y += move_dir[1]
 
