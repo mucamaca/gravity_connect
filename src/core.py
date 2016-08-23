@@ -1,7 +1,8 @@
 import tiles
-import queue
+import constants
 
-TABLESIZE = 10;
+
+TABLESIZE = 10
 
 class Core:
     size = TABLESIZE
@@ -15,7 +16,7 @@ class Core:
         self.grid[token.x][token.y].inhabitor = token
 
     def get_token_pos(self, x, y):
-        if Square(x, y).is_special:
+        if Square(x, y).is_special(self.size):
             return (x, y)
         where_to_move = self.grid[x][y].where_is()
         tmp_x = x
@@ -24,13 +25,13 @@ class Core:
             while self.grid[tmp_x][tmp_y] == None and tmp_x:
                 tmp_x -= 1
         elif where_to_move[0] == 1:
-            while self.grid[tmp_x][tmp_y] == None and tmp_x - size:
+            while self.grid[tmp_x][tmp_y] == None and tmp_x - self.size:
                 tmp_x += 1
         elif where_to_move[1] == -1:
             while self.grid[tmp_x][tmp_y] == None and tmp_y:
                 tmp_y -= 1
         elif where_to_move[1] == -1:
-            while self.grid[tmp_x][tmp_y] == None and tmp_y - size:
+            while self.grid[tmp_x][tmp_y] == None and tmp_y - self.size:
                 tmp_y += 1
         return (tmp_x, tmp_y)
 

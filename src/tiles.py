@@ -1,3 +1,6 @@
+import constants
+
+
 class Tile:
     def __init__(self, x, y):
         self.x = x
@@ -28,15 +31,14 @@ class Square(Tile):
     empty = 0
     cross = 1
     circle = 2
-    def __init__(self):
+    def __init__(self, x, y):
         super().__init__(x, y)
-        self.sign = empty
-        if x == y or x + y == Grid.size:
+        self.sign = self.empty
+        self.inhabitor = None
+        if x == y or x + y == constants.TABLESIZE:
             self.is_special = True
         else:
             self.is_special = False
-        
-        self.inhabitor = None
         
     # @property
     # def inhabitor(self):
