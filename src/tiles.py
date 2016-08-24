@@ -35,7 +35,7 @@ class Square(Tile):
         super().__init__(x, y)
         self.sign = self.empty
         self.inhabitor = None
-        if x == y or x + y == constants.TABLESIZE:
+        if x == y or x + y + 1 == constants.TABLESIZE:
             self.is_special = True
         else:
             self.is_special = False
