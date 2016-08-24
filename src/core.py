@@ -17,22 +17,22 @@ class Core:
         tmp_y = y        
         if where_to_move[0] == -1:
             while (self.grid[tmp_x][tmp_y].inhabitor == None and
-                   tmp_x):
+                   tmp_x + 1):
                 tmp_x -= 1
             return (tmp_x + 1, tmp_y)
         if where_to_move[0] == 1:
             while (self.grid[tmp_x][tmp_y].inhabitor == None and
-                   tmp_x + 1 < self.size):
+                   tmp_x + 2< self.size):
                 tmp_x += 1
             return (tmp_x - 1, tmp_y)
         if where_to_move[1] == -1:
             while (self.grid[tmp_x][tmp_y].inhabitor == None and
-                   tmp_y):
+                   tmp_y + 1):
                 tmp_y -= 1
             return (tmp_x, tmp_y + 1)
         if where_to_move[1] == 1:
             while (self.grid[tmp_x][tmp_y].inhabitor == None and
-                   tmp_y + 1 < self.size):
+                   tmp_y + 2 < self.size):
                 tmp_y += 1
             return (tmp_x, tmp_y - 1)
 
@@ -40,7 +40,7 @@ class Core:
        # assert (abs(x + y - self.size) == 1 or x == y + 1 or x + 1 == y or)
         token_pos = self.get_token_pos(x, y)
         self.grid[token_pos[0]][token_pos[1]].inhabitor = tiles.Token(
-            token_pos[0],oken_pos[1], sign)
+            token_pos[0], token_pos[1], sign)
 
 
     def end(self):

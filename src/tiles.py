@@ -34,7 +34,7 @@ class Square(Tile):
     def __init__(self, x, y):
         super().__init__(x, y)
         self.sign = self.empty
-        #self.inhabitor = None
+        self._inhabitor = None
         if x == y or x + y + 1 == TABLESIZE:
             self.is_special = True
         else:
@@ -50,10 +50,10 @@ class Square(Tile):
             self._inhabitor = None
             self.sign = empty
         else:
-            self._inhabitor = inhabitor
-            self.sign = inhabitor.sign
+            self._inhabitor = value
+            self.sign = value.sign
 
-    @inhabitor.deletter
+    @inhabitor.deleter
     def inhabitor(self):
         del self._inhabitor
     
