@@ -67,14 +67,14 @@ class GUI:
             #self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
                                       (x+1) * self.grid, (y+1) * self.grid, fill=colour)
-            self.root.after(500, do_nothing())
+            self.root.after(250, do_nothing())
 
             x += move_dir[0]
             y += move_dir[1]
 
                 
     def valid_coords(self, x, y):
-        return True
+        return not self.core.grid[x][y].sign
                                                         
 def do_nothing():
-    pass
+    print("lol")
