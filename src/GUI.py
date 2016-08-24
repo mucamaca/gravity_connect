@@ -6,7 +6,7 @@ class GUI:
     def __init__(self, core):
         self.core = core
         self.height, self.width = FRAMESIZE, FRAMESIZE
-        self.grid = self.height / 10
+        self.grid = self.height / TABLESIZE
         self.root = tk.Tk()
         self.turn = True
         
@@ -17,7 +17,7 @@ class GUI:
     def make_canvas(self):
         self.map = tk.Canvas(self.root, height=self.height, width=self.width)
         self.map.bind('<Button-1>', self.mouse_click)
-        self.map.grid(row=0, column=0)
+        self.map.grid(row = 0, column = 0)
 
         self.load_map() 
 
@@ -36,7 +36,7 @@ class GUI:
 
     def load_map(self):
         self.map.delete('all')
-        # Dhonraws the grid
+        # Draws the grid
         for i in range(TABLESIZE):
             self.map.create_line(0, i * self.grid, TABLESIZE * self.grid, i * self.grid)
             self.map.create_line(i * self.grid, 0, i * self.grid, TABLESIZE * self.grid)
@@ -64,10 +64,9 @@ class GUI:
             else:
                 colour = "red"
             
-            self.root.after(100, self.load_map())
+            self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
                                       (x+1) * self.grid, (y+1) * self.grid, fill="red")
-
 
             x += move_dir[0]
             y += move_dir[1]
