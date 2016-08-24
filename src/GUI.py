@@ -8,7 +8,7 @@ class GUI:
         self.grid = self.height / 10
         self.root = tk.Tk()
         
-        turn = True
+        self.turn = True
         
         self.make_canvas()
         self.root.mainloop()
@@ -27,12 +27,12 @@ class GUI:
             
             if self.valid_coords(mouse_row, mouse_col):
                 self.drop_token(mouse_row, mouse_col)
-                if turn:
+                if self.turn:
                     sign = 1
                 else:
                     sign = 2
                 self.core.insert_token(mouse_row, mouse_col, sign)
-                turn = not turn
+                self.turn = not self.turn
                 
                 self.load_map(self.core.grid, self.map)
 
@@ -63,7 +63,7 @@ class GUI:
         pos = self.core.get_token_pos(x, y)
         move_dir = self.core.grid[x][y].where_is()
         while (x != pos[0]) and (y != pos[1]):
-            if turn:
+            if self.turn:
                 colour = "blue"
             else:
                 colour = "red"
