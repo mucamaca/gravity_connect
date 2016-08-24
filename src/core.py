@@ -1,8 +1,8 @@
 import tiles
-import constants
+from constants import *
 
 class Core:
-    size = constants.TABLESIZE
+    size = TABLESIZE
     def __init__(self):
         self.grid = [[tiles.Square(i, j) for i in range(self.size)] for j in range(self.size)]
         self.token_to_move = None
