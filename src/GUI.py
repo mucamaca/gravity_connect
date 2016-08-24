@@ -23,15 +23,15 @@ class GUI:
         self.load_map() 
 
     def mouse_click(self, event):
-        if self.core.end():
-            return
         mouse_x = int(event.x // self.grid) 
         mouse_y = int(event.y // self.grid)
-        
+
         if self.valid_coords(mouse_x, mouse_y):
             self.drop_token(mouse_x, mouse_y)
             sign = (not self.turn) + 1
             self.core.insert_token(mouse_x, mouse_y, sign)
+            if self.core.end(mouse_x, mouse_y):
+                exit(0)
             self.turn = not self.turn
             self.load_map()
 
