@@ -7,13 +7,13 @@ class Tile:
         self.y = y
         
     def where_is(self):
-        if self.x < self.y and self.x + self.y + 1 < TABLESIZE:
+        if self.y < self.x and self.y + self.x + 1 < TABLESIZE:
             return (-1, 0)
-        elif self.x < self.y and self.x + self.y + 1 > TABLESIZE:
+        elif self.y < self.x and self.y + self.x + 1 > TABLESIZE:
             return (0, 1)
-        elif self.x > self.y and self.x + self.y + 1 < TABLESIZE:
+        elif self.y > self.x and self.y + self.x + 1 < TABLESIZE:
             return (0, -1)
-        elif self.x > self.y and self.x + self.y + 1 > TABLESIZE:
+        elif self.y > self.x and self.y + self.x + 1 > TABLESIZE:
             return (1, 0)
         else:
             return (0, 0)
