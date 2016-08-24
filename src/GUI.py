@@ -18,20 +18,17 @@ class GUI:
         self.map.bind('<Button-1>', self.mouse_click)
         self.map.grid(row=0, column=0)
 
-        self.load_map(self.core.grid, self.map)
+        self.load_map(self.core.grid, self.map) 
 
     def mouse_click(self, event):
         if not self.core.end():
-            mouse_row = int(event.y // self.grid) 
-            mouse_col = int(event.x // self.grid)
+            mouse_x = int(event.x // self.grid) 
+            mouse_y = int(event.y // self.grid)
             
-            if self.valid_coords(mouse_row, mouse_col):
-                self.drop_token(mouse_row, mouse_col)
-                if self.turn:
-                    sign = 1
-                else:
-                    sign = 2
-                self.core.insert_token(mouse_row, mouse_col, sign)
+            if self.valid_coords(mouse_y, mouse_x):
+                self.drop_token(mouse_y, mouse_x)
+                sign = (not self.turn) + 1
+                self.core.insert_token(mouse_y, mouse_x, sign)
                 self.turn = not self.turn
                 
                 self.load_map(self.core.grid, self.map)
