@@ -9,21 +9,23 @@ class Core:
     
     def get_token_pos(self, x, y):
         if tiles.Square(x, y).is_special:
+            print("meowim special", x, y)
             return (x, y)
         where_to_move = self.grid[x][y].where_is()
         tmp_x = x
         tmp_y = y        
         if where_to_move[0] == -1:
-            while self.grid[tmp_x][tmp_y] == None and tmp_x:
+            print("x", -1)
+            while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_x:
                 tmp_x -= 1
         elif where_to_move[0] == 1:
-            while self.grid[tmp_x][tmp_y] == None and tmp_x - self.size:
+            while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_x - self.size:
                 tmp_x += 1
         elif where_to_move[1] == -1:
-            while self.grid[tmp_x][tmp_y] == None and tmp_y:
+            while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_y:
                 tmp_y -= 1
         elif where_to_move[1] == -1:
-            while self.grid[tmp_x][tmp_y] == None and tmp_y - self.size:
+            while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_y - self.size:
                 tmp_y += 1
         return (tmp_x, tmp_y)
 
