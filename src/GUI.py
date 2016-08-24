@@ -27,7 +27,11 @@ class GUI:
             
             if self.valid_coords(mouse_row, mouse_col):
                 self.drop_token(mouse_row, mouse_col)
-                self.core.insert_token(mouse_row, mouse_col, self.core.grid)
+                if turn:
+                    sign = 1
+                else:
+                    sign = 2
+                self.core.insert_token(mouse_row, mouse_col, sign)
                 turn = not turn
                 
                 self.load_map(self.core.grid, self.map)
