@@ -62,6 +62,9 @@ class GUI:
     def drop_token(self, x, y):
         pos = self.core.get_token_pos(x, y)
         move_dir = self.core.grid[x][y].where_is()
+        print("x: ", x, "y: ", y)
+        print("pos ", pos)
+        print("move_dir ", move_dir)
         while (x != pos[0]) and (y != pos[1]):
             if self.turn:
                 colour = "blue"
