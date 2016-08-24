@@ -12,9 +12,9 @@ class Tile:
         elif self.x < self.y and self.x + self.y + 1 > TABLESIZE:
             return (0, 1)
         elif self.x > self.y and self.x + self.y + 1 < TABLESIZE:
-            return (1, 0)
-        elif self.x > self.y and self.x + self.y + 1 > TABLESIZE:
             return (0, -1)
+        elif self.x > self.y and self.x + self.y + 1 > TABLESIZE:
+            return (1, 0)
         else:
             return (0, 0)
         
