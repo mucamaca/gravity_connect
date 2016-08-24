@@ -1,1 +1,10 @@
+#autosaves
 *~
+
+#python compiled files
+*.pyc
+
+./src/__pycache__
+
+
+
