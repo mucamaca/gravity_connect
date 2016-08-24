@@ -18,7 +18,7 @@ class Core:
             while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_x:
                 tmp_x -= 1
         elif where_to_move[0] == 1:
-            while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_x < self.size:
+            while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_x + 1 < self.size:
                 tmp_x += 1
         elif where_to_move[1] == -1:
             while self.grid[tmp_x][tmp_y].inhabitor == None and tmp_y:
