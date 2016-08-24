@@ -30,23 +30,24 @@ class Core:
             while (self.grid[tmp_x][tmp_y].sign == 0 and
                    tmp_x + 1< self.size):
                 tmp_x += 1
-            if tmp_x + 1 < self.size:
+            if tmp_x + 1 and self.grid[tmp_x][tmp_y].sign != 0 < self.size:
                 return (tmp_x - 1, tmp_y)
             else:
                 return (tmp_x, tmp_y)
 
         if where_to_move[1] == 1:
             while (self.grid[tmp_x][tmp_y].sign == 0 and
-                   tmp_y + 2 < self.size):
+                   tmp_y + 1 < self.size):
                 tmp_y += 1
-            if tmp_x + 1 < self.size:
-                return (tmp_x - 1, tmp_y)
+            if tmp_y + 1 and self.grid[tmp_x][tmp_y].sign != 0 < self.size:
+                return (tmp_x, tmp_y - 1)
             else:
                 return (tmp_x, tmp_y)
 
 
     def insert_token(self, x, y, sign):
         token_pos = self.get_token_pos(x, y)
+        
         self.grid[token_pos[0]][token_pos[1]].sign = sign
 
     def end(self):
