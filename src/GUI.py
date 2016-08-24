@@ -8,7 +8,7 @@ class GUI:
         self.height, self.width = FRAMESIZE, FRAMESIZE
         self.grid = self.height / TABLESIZE
         self.root = tk.Tk()
-        self.root.title("Gravity connect")
+        self.root.title("Gravity Connect")
         self.turn = True
         
         self.make_canvas()
