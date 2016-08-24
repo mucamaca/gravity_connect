@@ -1,9 +1,10 @@
 import tkinter as tk
+from constants import * 
 
 class GUI:
     def __init__(self, core):
         self.core = core
-        self.height, self.width = 400, 400
+        self.height, self.width = FRAMESIZE, FRAMESIZE
         self.grid = self.height / 10
         self.root = tk.Tk()
         
@@ -32,15 +33,12 @@ class GUI:
                 self.load_map(self.core.grid, self.map)
 
     def load_map(self, grid, map):
-        self.grid = grid
         self.map = map
         self.map.delete('all')
         # Draws the grid
         for i in range(len(grid)):
-            if i == 0:
-                print(0, i * self.grid, len(grid) * self.grid, i * self.grid)
-            self.map.create_line(0, i * self.grid, len(grid) * self.grid, i * self.grid)
-            self.map.create_line(i * self.grid, 0, i * self.grid, len(grid) * self.grid)
+            self.map.create_line(0, i * self.grid, TABLESIZE * self.grid, i * self.grid)
+            self.map.create_line(i * self.grid, 0, i * self.grid, TABLESIZE * self.grid)
 
         # Draws the tokens and special fields:
         for i in range(len(grid)):
@@ -67,7 +65,7 @@ class GUI:
                 colour = "red"
                 
         self.map.create_rectangle(i * self.grid, j * self.grid,
-                                          (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
+                                  (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
         x += move_dir[0]
         y += move_dir[1]
                 
