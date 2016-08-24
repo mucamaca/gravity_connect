@@ -64,10 +64,10 @@ class GUI:
             else:
                 colour = "red"
                 
-        self.map.create_rectangle(i * self.grid, j * self.grid,
-                                  (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
-        x += move_dir[0]
-        y += move_dir[1]
+            self.map.create_rectangle(x * self.grid, y * self.grid,
+                                      (x + 1) * self.grid, (y + 1) * self.grid, fill=colour)
+            x += move_dir[0]
+            y += move_dir[1]
                 
     def valid_coords(self, x, y):
         return True
