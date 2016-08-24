@@ -25,10 +25,10 @@ class GUI:
             mouse_x = int(event.x // self.grid) 
             mouse_y = int(event.y // self.grid)
             
-            if self.valid_coords(mouse_y, mouse_x):
-                self.drop_token(mouse_y, mouse_x)
+            if self.valid_coords(mouse_x, mouse_y):
+                self.drop_token(mouse_x, mouse_y)
                 sign = (not self.turn) + 1
-                self.core.insert_token(mouse_y, mouse_x, sign)
+                self.core.insert_token(mouse_x, mouse_y, sign)
                 self.turn = not self.turn
                 
                 self.load_map(self.core.grid, self.map)
