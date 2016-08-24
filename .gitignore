@@ -4,7 +4,8 @@
 #python compiled files
 *.pyc
 
-./src/__pycache__
+#pycache folder
+__pycache__
 
 
 
