@@ -47,11 +47,34 @@ class Core:
 
     def insert_token(self, x, y, sign):
         token_pos = self.get_token_pos(x, y)
-        
         self.grid[token_pos[0]][token_pos[1]].sign = sign
 
-    def end(self):
-        return False
+    def end(self, x ,y):
+        c_sign = self.grid[x][y].sign
+        
+        for i in range(x - 3, x + 1):
+            if(i >= 0 and i + 3 < TABLESIZE):
+                for j in range(i, i + 4):
+                    if self.grid[j][y].sign != c_sign:
+                        return False
+        for i in range(y - 3, y + 1):
+            if(i >= 0 and i + 3 < TABLESIZE):
+                for j in range(i, i + 4):
+                    if self.grid[x][j].sign != c_sign:
+                        return False
+        for i, j in zip(range(x - 3, x + 1), range(y - 3, y + 1)):
+            if i >= 0 and j >=0 and i + 3 < TABLESIZE and j + 3 < TABLESIZE:
+                for k, l in zip(range(i, i + 4), range(j, j + 4)):
+                    if self.grid[k][l].sign != c_sign:
+                        return False
+        for i, j in zip(range(x - 3, x + 1), range(y, y - 4)):
+            if i >= 0 and j - 3 >= 0 and j < TABLESIZE and i + 3 < TABLESIZE:
+                for k, l in zip(range(i, i + 4), range(j, j - 4)):
+                    if self.grid[k][l].sign != c_sign:
+                        return False
+        return True
+        
+        
     
 
     
