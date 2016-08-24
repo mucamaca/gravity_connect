@@ -56,8 +56,8 @@ class GUI:
                                               (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
 
     def drop_token(self, x, y):
-        pos = core.get_token_pos(x, y)
-        move_dir = core.grid[x][y].where_is()
+        pos = self.core.get_token_pos(x, y)
+        move_dir = self.core.grid[x][y].where_is()
         while (x != pos[0]) and (y != pos[1]):
             if turn:
                 colour = "blue"
@@ -70,5 +70,5 @@ class GUI:
         y += move_dir[1]
                 
     def valid_coords(self, x, y):
-        pass
+        return True
                                                         
