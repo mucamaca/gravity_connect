@@ -13,7 +13,7 @@ class Core:
         self.grid[token.x][token.y].inhabitor = token
 
     def get_token_pos(self, x, y):
-        if Square(x, y).is_special(self.size):
+        if tiles.Square(x, y).is_special:
             return (x, y)
         where_to_move = self.grid[x][y].where_is()
         tmp_x = x

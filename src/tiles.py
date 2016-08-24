@@ -1,4 +1,4 @@
-import constants
+from constants import *
 
 
 class Tile:
@@ -7,13 +7,13 @@ class Tile:
         self.y = y
         
     def where_is(self):
-        if self.x < self.y and self.x + self.y < Grid.size:
+        if self.x < self.y and self.x + self.y < TABLESIZE:
             return (-1, 0)
-        elif self.x < self.y and self.x + self.y > Grid.size:
+        elif self.x < self.y and self.x + self.y > TABLESIZE:
             return (0, 1)
-        elif self.x > self.y and self.x + self.y < Grid.size:
+        elif self.x > self.y and self.x + self.y < TABLESIZE:
             return (1, 0)
-        elif self.x > self.y and self.x + self.y > Grid.size:
+        elif self.x > self.y and self.x + self.y > TABLESIZE:
             return (0, -1)
         else:
             return (0, 0)
@@ -35,7 +35,7 @@ class Square(Tile):
         super().__init__(x, y)
         self.sign = self.empty
         self.inhabitor = None
-        if x == y or x + y + 1 == constants.TABLESIZE:
+        if x == y or x + y + 1 == TABLESIZE:
             self.is_special = True
         else:
             self.is_special = False
