@@ -49,9 +49,9 @@ class GUI:
                 if self.core.grid[i][j].is_special:
                     colour = "gray"
                 if self.core.grid[i][j].sign == 1:
-                    colour = "blue"
+                    colour = COLOUR_1
                 if self.core.grid[i][j].sign == 2:
-                    colour = "red"
+                    colour = COLOUR_2
                 self.map.create_rectangle(i * self.grid, j * self.grid,
                                         (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
 
@@ -60,13 +60,14 @@ class GUI:
         move_dir = self.core.grid[x][y].where_is()
         while (x != pos[0]) or (y != pos[1]):
             if self.turn:
-                colour = "blue"
+                colour = COLOUR_1
             else:
-                colour = "red"
+                colour = COLOUR_2
             
-            self.load_map()
+            #self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
-                                      (x+1) * self.grid, (y+1) * self.grid, fill="red")
+                                      (x+1) * self.grid, (y+1) * self.grid, fill=colour)
+            self.root.after(500, do_nothing())
 
             x += move_dir[0]
             y += move_dir[1]
@@ -75,3 +76,5 @@ class GUI:
     def valid_coords(self, x, y):
         return True
                                                         
+def do_nothing():
+    pass
