@@ -25,7 +25,7 @@ class GUI:
             mouse_row = int(event.y // self.grid) 
             mouse_col = int(event.x // self.grid)
             
-            if self.valid_coords(mouse_row, mmouse_col):
+            if self.valid_coords(mouse_row, mouse_col):
                 self.drop_token(mouse_row, mouse_col)
                 self.core.insert_token(mouse_row, mouse_col, self.core.grid)
                 turn = not turn
@@ -35,7 +35,7 @@ class GUI:
     def load_map(self, grid, map):
         self.map = map
         self.map.delete('all')
-        # Draws the grid
+        # Dhonraws the grid
         for i in range(len(grid)):
             self.map.create_line(0, i * self.grid, TABLESIZE * self.grid, i * self.grid)
             self.map.create_line(i * self.grid, 0, i * self.grid, TABLESIZE * self.grid)
