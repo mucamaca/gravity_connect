@@ -29,8 +29,9 @@ class GUI:
         if self.valid_coords(mouse_x, mouse_y):
             self.drop_token(mouse_x, mouse_y)
             sign = (not self.turn) + 1
-            self.core.insert_token(mouse_x, mouse_y, sign)
-            if self.core.end(mouse_x, mouse_y):
+            new_pos=self.core.insert_token(mouse_x, mouse_y, sign)
+            if self.core.end(*new_pos):
+                print("ovojemaca")
                 exit(0)
             self.turn = not self.turn
             self.load_map()
@@ -76,6 +77,6 @@ class GUI:
                 
     def valid_coords(self, x, y):
         return not self.core.grid[x][y].sign
-                                                        
+                 
 def do_nothing():
-    print("lol")
+    pass
