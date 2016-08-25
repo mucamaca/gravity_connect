@@ -1,6 +1,6 @@
-TABLESIZE = 20
+TABLESIZE = 10
 
-FRAMESIZE = 800
+FRAMESIZE = 400
 
 COLOUR_1 = "deeppink"
 COLOUR_2 = "pink"
