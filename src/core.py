@@ -48,7 +48,7 @@ class Core:
     def insert_token(self, x, y, sign):
         token_pos = self.get_token_pos(x, y)
         self.grid[token_pos[0]][token_pos[1]].sign = sign
-        return token_pos
+        return self.end(*token_pos)
 
     def get_tuples(self, i, j, k ,l):
         if i == k:
@@ -61,10 +61,11 @@ class Core:
             return list(zip(range(i, k), range(j, l)))
 
     def is_4inarow(self, i, j, k, l, sign):
-        for z in self.get_tuples(i, j, k, l):
-            if self.grid[z[0]][z[1]].sign != sign:
+        ret_val = True
+        for z,ž in self.get_tuples(i, j, k, l):
+            if self.grid[z][ž].sign != sign:
                 return False
-        return True
+        return ret_val
             
         
     def end(self, x ,y):

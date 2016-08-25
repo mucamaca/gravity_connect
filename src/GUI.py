@@ -29,8 +29,7 @@ class GUI:
         if self.valid_coords(mouse_x, mouse_y):
             self.drop_token(mouse_x, mouse_y)
             sign = (not self.turn) + 1
-            new_pos=self.core.insert_token(mouse_x, mouse_y, sign)
-            if self.core.end(*new_pos):
+            if self.core.insert_token(mouse_x, mouse_y, sign):
                 print("ovojemaca")
                 exit(0)
             self.turn = not self.turn
@@ -69,7 +68,7 @@ class GUI:
             #self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
                                       (x+1) * self.grid, (y+1) * self.grid, fill=colour)
-            self.root.after(250, do_nothing())
+            self.root.after(50, do_nothing())
 
             x += move_dir[0]
             y += move_dir[1]
