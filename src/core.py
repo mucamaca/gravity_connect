@@ -48,43 +48,72 @@ class Core:
     def insert_token(self, x, y, sign):
         token_pos = self.get_token_pos(x, y)
         self.grid[token_pos[0]][token_pos[1]].sign = sign
-        return self.end(*token_pos)
-
-    def get_tuples(self, i, j, k ,l):
-        if i == k:
-            return list(zip([i] * abs(j - l), range(j, l)))
-        elif j == l:
-            return list(zip(range(i, k), [j] * abs(i - k)))
-        elif j > l:
-            return list(zip(range(i, k), range(j, l, -1)))
-        else:
-            return list(zip(range(i, k), range(j, l)))
-
-    def is_4inarow(self, i, j, k, l, sign):
-        ret_val = True
-        for z,ž in self.get_tuples(i, j, k, l):
-            if self.grid[z][ž].sign != sign:
-                return False
-        return ret_val
-            
+        return self.end(*token_pos)            
         
     def end(self, x ,y):
         c_sign = self.grid[x][y].sign
-        ret_val = True
-        for i in range(x - 3, x + 1):
-            if(i >= 0 and i + 3 < TABLESIZE):
-               ret_val = self.is_4inarow(i, y, i + 4, y, c_sign)
-                        
-        for i in range(y - 3, y + 1):
-            if(i >= 0 and i + 3 < TABLESIZE):
-                ret_val = self.is_4inarow(x, i, x, i + 4, c_sign)
+        found = 0
+        
+        for i in range(1, 4):
+            if self.grid[x + i][y].sign == c_sign:
+                found +=1
+            else:
+                break
+        for i in range(1, 3):
+            if self.grid[x - i][y].sign == c_sign:
+                found +=1
+            else:
+                break
 
-        for i, j in zip(range(x - 3, x + 1), range(y - 3, y + 1)):
-            if i >= 0 and j >=0 and i + 3 < TABLESIZE and j + 3 < TABLESIZE:
-                ret_val = self.is_4inarow(i, j, i + 4, j + 4, c_sign)
-                
-        for i, j in zip(range(x - 3, x + 1), range(y, y - 4)):
-            if i >= 0 and j - 3 >= 0 and j < TABLESIZE and i + 3 < TABLESIZE:
-                ret_val = self.is_4inarow(i, j, i + 4, j - 4, c_sign)
+        if found > 2:
+            return True
 
-        return ret_val
+        found = 0
+
+        for i in range(1, 4):
+            if self.grid[x][y + i].sign == c_sign:
+                found +=1
+            else:
+                break
+        for i in range(1, 4):
+            if self.grid[x][y - i].sign == c_sign:
+                found +=1
+            else:
+                break
+
+        if found > 2:
+            return True
+
+        found = 0
+
+        for i in range(1, 4):
+            if self.grid[x + i][y + i].sign == c_sign:
+                found += 1
+            else:
+                break
+        for i in range(1, 4):
+            if self.grid[x - i][y - i].sign == c_sign:
+                found += 1
+            else:
+                break
+
+            if found > 2:
+                return True
+
+        found = 0
+
+        for i in range(1, 4):
+            if self.grid[x + i][y - i].sign == c_sign:
+                found += 1
+            else:
+                break
+        for i in range(1, 4):
+            if self.grid[x - i][y + i].sign == c_sign:
+                found += 1
+            else:
+                break
+
+            if found > 2:
+                return True
+
+            return False
