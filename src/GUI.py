@@ -1,6 +1,5 @@
 import tkinter as tk
 from constants import *
-from time import sleep
 
 class GUI:
     def __init__(self, core):
@@ -28,9 +27,13 @@ class GUI:
 
         if self.valid_coords(mouse_x, mouse_y):
             self.drop_token(mouse_x, mouse_y)
+
+            # something to do with self.switch
+
             sign = (not self.turn) + 1
             self.core.insert_token(mouse_x, mouse_y, sign)
-            if self.core.end(mouse_x, mouse_y):
+
+            if self.core.end(*self.core.get_token_pos(mouse_x, mouse_y)):
                 exit(0)
             self.turn = not self.turn
             self.load_map()
@@ -59,23 +62,24 @@ class GUI:
     def drop_token(self, x, y):
         pos = self.core.get_token_pos(x, y)
         move_dir = self.core.grid[x][y].where_is()
-        while (x != pos[0]) or (y != pos[1]):
+        if (x != pos[0]) or (y != pos[1]):
             if self.turn:
                 colour = COLOUR_1
             else:
                 colour = COLOUR_2
             
-            #self.load_map()
+            self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
                                       (x+1) * self.grid, (y+1) * self.grid, fill=colour)
-            self.root.after(250, do_nothing())
+            
 
             x += move_dir[0]
             y += move_dir[1]
 
-                
+            self.switch = self.root.after(250, self.drop_token, x, y)
+            print(self.switch)
+        else:
+            pass
+
     def valid_coords(self, x, y):
         return not self.core.grid[x][y].sign
-                                                        
-def do_nothing():
-    print("lol")

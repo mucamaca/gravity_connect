@@ -1,6 +1,6 @@
-TABLESIZE = 10
+TABLESIZE = 20
 
-FRAMESIZE = 400
+FRAMESIZE = 800
 
-COLOUR_1 = "hotpink"
-COLOUR_2 = "deeppink"
+COLOUR_1 = "deeppink"
+COLOUR_2 = "pink"
