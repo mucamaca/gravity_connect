@@ -55,11 +55,15 @@ class Core:
         found = 0
         
         for i in range(1, 4):
-            if self.grid[x + i][y].sign == c_sign:
+            if x + i > 9:
+                break
+            elif self.grid[x + i][y].sign == c_sign:
                 found +=1
             else:
                 break
-        for i in range(1, 3):
+        for i in range(1, 4):
+            if x - i < 0:
+                break
             if self.grid[x - i][y].sign == c_sign:
                 found +=1
             else:
@@ -71,11 +75,15 @@ class Core:
         found = 0
 
         for i in range(1, 4):
+            if y + i > 9:
+                break
             if self.grid[x][y + i].sign == c_sign:
                 found +=1
             else:
                 break
         for i in range(1, 4):
+            if y - i < 0:
+                break
             if self.grid[x][y - i].sign == c_sign:
                 found +=1
             else:
@@ -87,11 +95,15 @@ class Core:
         found = 0
 
         for i in range(1, 4):
+            if x + i > 9 or y + i > 9:
+                break
             if self.grid[x + i][y + i].sign == c_sign:
                 found += 1
             else:
                 break
         for i in range(1, 4):
+            if x - i < 0 or y - i < 0:
+                break
             if self.grid[x - i][y - i].sign == c_sign:
                 found += 1
             else:
@@ -103,11 +115,15 @@ class Core:
         found = 0
 
         for i in range(1, 4):
+            if x + i > 9 or y - i < 0:
+                break
             if self.grid[x + i][y - i].sign == c_sign:
                 found += 1
             else:
                 break
         for i in range(1, 4):
+            if x - i < 0 or y + i > 9:
+                break
             if self.grid[x - i][y + i].sign == c_sign:
                 found += 1
             else:
