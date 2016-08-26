@@ -8,14 +8,14 @@ class AI:
     def __init__(self, cor):
         self.core = cor
 
-    def get_req_moves(tup):
+    def get_req_moves(self, tup):
         total = 0
-        diff = []
-        obs = []
+        diff = [0, 0, 0, 0]
+        obs = [0, 0, 0, 0]
         for i in range(4):
             diff[i] = abs(self.core.get_token_pos(tup[i][0], tup[i][1])[0] - tup[i][0]) + abs(self.core.get_token_pos(tup[i][0], tup[i][1])[1] + tup[i][1])
             for j in range(diff[i]):
-                if self.grid[tup[i][0] + j*self.grid[tup[i][0]][tup[i][1]].where_is()[0]][tup[i][1] + j*self.grid[tup[i][0]][tup[i][1]].where_is()[1]].sign != 0:
+                if self.core.grid[tup[i][0] + j*self.core.grid[tup[i][0]][tup[i][1]].where_is()[0]][tup[i][1] + j*self.core.grid[tup[i][0]][tup[i][1]].where_is()[1]].sign != 0:
                     obs[i] += 1
             diff[i] -= obs[i]
             total += diff[i]
