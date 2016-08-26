@@ -3,7 +3,7 @@ from core import Core.get_token_pos as get_token_pos
 class AI:
     score_list_enemy = [7, 16, 400, 1800, 100000]
     score_list_me =    [7, 36, 800, 15000,  1000000]
-
+    init = 1
     def AI_next_move(grid, x ,y):
         self.grid = grid[:]
         eval_tuples(x, y)
@@ -39,7 +39,11 @@ class AI:
         return ret_val
 
     def update_scores(self, tup, x, y):
-        
+        old_tup = tup_score(tup, x, y)
+        pos = get_token_pos(x, y)
+        self.insert_token(x, y, self.grid[pos[0]][pos[1]].sign)
+        new_tup = tup_score(tup, x, y)
+        self.remove_token()
         
 
     def count_me(self, tup):
