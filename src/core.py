@@ -17,7 +17,6 @@ class Core:
                     if not (i + 1 > 9 or j - 1 < 0):
                         self.valid_list.append(tuple([i+1, j]))
                         self.valid_list.append(tuple([i, j-1]))
-        print(self.valid_list)
 
         self.grid = [[Tile(i, j) for i in range(self.size)]
                      for j in range(self.size)]
