@@ -1,7 +1,21 @@
 from core import Core.get_token_pos as get_token_pos
 
 class AI:
-    score_list_me = [7, 16, 400, 1800, 100000]
+    score_list_enemy = [[7, 16, 400, 1800, 100000],
+                        [7, 8, 200, 900, 50000],
+                        [7, 4, 100, 450, 25000],
+                        [7, 2, 50, 225, 12500],
+                        [7, 1, 25, 112, 6250],
+                        [7, 0, 12, 56, 3125],
+                        [7, 0, 6, 28, 1500]]
+    score_list_me =    [[7, 36, 800, 15000,  1000000],
+                        [7, 18, 400, 7500, 500000],
+                        [7, 9, 200, 3750, 250000],
+                        [7, 4, 100, 1850, 125000],
+                        [7, 2, 50, 925,  62500],
+                        [7, 1, 25, 460, 31250],
+                        [7, 0, 12, 230, 15100],
+                        [7, 0, 6, 115, 7500]]
     def AI_next_move(grid, x ,y):
         self.grid = grid[:]
         eval_tuples(x, y)
@@ -38,14 +52,22 @@ class AI:
         return ret_val
 
     def update_scores(self, score):
+        
 
+    def count_me(self, tup):
+        for i, j in tup:
+            if self.grid[i][j].sign = 
     def tup_score(self, tup, x, y):
-        no_1 = self.count_mark_1(tup)
-        no_2 = self.count_mark_2(tup)
-        if no_1 and no_2:
+        me = self.count_me(tup, self.me)
+        enemy = self.count_enemy(tup, self.enemy)
+        if me and enemy:
             return 0
-        elif no_1 and not no_2:
-            
+        else:
+            if enemy:
+                return self.score_list_enemy[self.get_req_moves(tup)][enemy]
+            elif me:
+                return self.score_list_me[self.get_req_moves(tup)][me] 
+                
             
         
         
