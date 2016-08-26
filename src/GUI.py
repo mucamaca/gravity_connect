@@ -27,7 +27,7 @@ class GUI:
         mouse_x = int(event.x // self.grid) 
         mouse_y = int(event.y // self.grid)
 
-        if self.valid_coords(mouse_x, mouse_y):
+        if self.core.valid_coords(mouse_x, mouse_y):
             self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
             self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
 
@@ -77,9 +77,6 @@ class GUI:
             self.root.after(250, self.drop_token, x, y, pos)
         else:
             pass
-
-    def valid_coords(self, x, y):
-        return not self.core.grid[x][y].sign
 
     def increment_id(self, x, y):
         pos = self.core.get_token_pos(x, y)
