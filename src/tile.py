@@ -9,6 +9,7 @@ class Tile:
         self.x = x
         self.y = y
         self.sign = self.empty
+        self.score = 0
         
         if x == y or x + y + 1 == TABLESIZE:
             self.is_special = True
