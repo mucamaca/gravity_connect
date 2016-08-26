@@ -1,6 +1,8 @@
 from core import Core
-from GUI import GUI 
+from GUI import GUI
+from ai import AI
 
 if __name__ == "__main__":
-	core = Core()
-	gui = GUI(core)
+    core = Core()
+    ai = AI(core)
+    gui = GUI(core, ai)

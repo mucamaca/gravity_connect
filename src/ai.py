@@ -1,4 +1,5 @@
 from core import Core
+from tile import Tile
 
 class AI:
     score_list_enemy = [7, 16, 400, 1800, 100000]
@@ -7,23 +8,58 @@ class AI:
 
     def __init__(self, cor):
         self.core = cor
+        print(self.get_req_moves(((3,7),(4,7),(5,7),(6,7))))
 
     def get_req_moves(self, tup):
-        total = 0
-        diff = [0, 0, 0, 0]
-        obs = [0, 0, 0, 0]
-        for i in range(4):
-            diff[i] = abs(self.core.get_token_pos(tup[i][0], tup[i][1])[0] - tup[i][0]) + abs(self.core.get_token_pos(tup[i][0], tup[i][1])[1] + tup[i][1])
-            for j in range(diff[i]):
-                if self.core.grid[tup[i][0] + j*self.core.grid[tup[i][0]][tup[i][1]].where_is()[0]][tup[i][1] + j*self.core.grid[tup[i][0]][tup[i][1]].where_is()[1]].sign != 0:
-                    obs[i] += 1
-            diff[i] -= obs[i]
-            total += diff[i]
-        return total 
+        sm = val = 0
+        for x,y in tup:
+            if Tile(x, y).is_special:
+                continue
+            where_to_move = self.core.grid[x][y].where_is()
+            tmp_x = x
+            tmp_y = y
+            val = 0
+            if where_to_move[0] == -1:
+                while (self.core.grid[tmp_x][tmp_y].sign == 0 and
+                       tmp_x + 1):
+                    tmp_x -= 1
+                    val += 1
+                sm+=val -1
+                continue
+            if where_to_move[1] == -1:
+                while (self.core.grid[tmp_x][tmp_y].sign == 0 and
+                       tmp_y + 1):
+                    tmp_y -= 1
+                    val += 1
+                sm+=val - 1
+                continue
 
-    def AI_next_move(grid, x ,y):
-        self.grid = grid[:]
+            if where_to_move[0] == 1:
+                while (self.core.grid[tmp_x][tmp_y].sign == 0 and
+                       tmp_x + 1< self.core.size):
+                    tmp_x += 1
+                    val += 1
+                if tmp_x + 1 and self.core.grid[tmp_x][tmp_y].sign != 0 < self.core.size:
+                    sm+= val -1                    
+                else:
+                    sm+=val
+                continue
+
+            if where_to_move[1] == 1:
+                while (self.core.grid[tmp_x][tmp_y].sign == 0 and
+                       tmp_y + 1 < self.core.size):
+                    tmp_y += 1
+                    val += 1
+                if tmp_y + 1 and self.core.grid[tmp_x][tmp_y].sign != 0 < self.core.size:
+                    sm+=val-1
+                else:
+                    sm+=val
+        return sm
+
+
+    def AI_next_move(x, y):
         eval_tuples(x, y)
+        
         
     def get_tuples(self, i, j, k ,l):
         if i == k:
@@ -56,9 +92,7 @@ class AI:
 
     def update_scores(self, tup, x, y):
         old_tup = tup_score(tup, x, y)
-
         pos = self.core.get_token_pos(x, y)
-
         self.insert_token(x, y, self.grid[pos[0]][pos[1]].sign)
         new_tup = tup_score(tup, x, y)
         self.remove_token()
