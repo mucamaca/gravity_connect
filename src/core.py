@@ -103,7 +103,7 @@ class Core:
                 break
 
         if found > 2:
-            return True
+            return c_sign
 
         found = 0
 
@@ -123,7 +123,7 @@ class Core:
                 break
 
         if found > 2:
-            return True
+            return c_sign
 
         found = 0
 
@@ -143,7 +143,7 @@ class Core:
                 break
 
         if found > 2:
-            return True
+            return c_sign
 
         found = 0
         for i in range(1, 4):
@@ -162,6 +162,6 @@ class Core:
                 break
 
         if found > 2:
-            return True
+            return c_sign
 
         return False
