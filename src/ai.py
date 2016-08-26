@@ -36,10 +36,9 @@ class AI:
         for i, j in zip(range(x - 3, x + 1), range(y, y - 4)):
             if i >= 0 and j - 3 >= 0 and j < TABLESIZE and i + 3 < TABLESIZE:
                 ret_val.append(self.get_tuples(i, j, i + 4, j - 4))
-
         return ret_val
 
-    def update_scores(self, ):
+    def update_scores(self, tup, x, y):
         
         
 
@@ -75,7 +74,7 @@ class AI:
             return 7
 
     def eval_tuples(self, x, y):
-        lst = self.list_of_tuples()
+        lst = self.list_of_tuples(get_token_pos(x, y))
         for i in lst:
             self.update_scores(self.tup_score(i, x, y))
 
