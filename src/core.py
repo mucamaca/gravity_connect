@@ -59,19 +59,20 @@ class Core:
 
     def get_click_pos(self, x, y):
             dir = self.grid[x][y].where_is()
-            for i in range(3):
-                if self.grid[x - i*dir[0]][y - i*dir[1]] in self.valid_list:
-                    return tuple([x - i*dir[0], y - i*dir[1]])
+            for i in range(0, 4):
+                print(x - i*dir[0], y - i*dir[1])
+                if (x - i*dir[0], y - i*dir[1]) in self.valid_list:
+                    return (x - i*dir[0], y - i*dir[1])
 
     def valid_coords(self, x, y):
-        if tuple([x, y]) in self.valid_list and self.grid[x][y].sign == 0:
+        if (x, y) in self.valid_list and self.grid[x][y].sign == 0:
             return True
         return False
 
     def insert_token(self, x, y, sign):
         token_pos = self.get_token_pos(x, y)
         self.grid[token_pos[0]][token_pos[1]].sign = sign
-        print(self.get_click_pos(token_pos[0], token_pos[1]))
+        print(self.get_click_pos(*token_pos))
         return self.end(*token_pos)            
         
     def end(self, x, y):
