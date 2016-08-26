@@ -92,7 +92,7 @@ class AI:
             return self.proper_score(self.score_list_me[me], self.get_req_moves(tup))
         else:
             if not self.init:
-                raise Exception, "neki je narobe"
+                raise Exception("neki je narobe")
             return 7
 
     def eval_tuples(self, x, y):
