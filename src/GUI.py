@@ -1,4 +1,5 @@
 import tkinter as tk
+from core import Core
 from constants import *
 
 class GUI:
@@ -28,16 +29,14 @@ class GUI:
 
         if self.valid_coords(mouse_x, mouse_y):
             self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
-            self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
-                            self.place_token, mouse_x, mouse_y)
+            self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
 
     def place_token(self, x, y):
         sign = (not self.turn) + 1
         if self.core.insert_token(x, y, sign):
-            exit(0)
+            self.game_end(sign)
         self.turn = not self.turn
         self.load_map()
-
 
     def load_map(self):
         self.map.delete('all')
@@ -71,15 +70,16 @@ class GUI:
             self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
                                       (x+1) * self.grid, (y+1) * self.grid, fill=colour)
+            
             x += move_dir[0]
             y += move_dir[1]
 
             self.root.after(250, self.drop_token, x, y, pos)
-            print("dopping")
+        else:
+            pass
 
     def valid_coords(self, x, y):
         return not self.core.grid[x][y].sign
-
 
     def increment_id(self, x, y):
         pos = self.core.get_token_pos(x, y)
@@ -89,6 +89,37 @@ class GUI:
             diff = abs(x - pos[0])
         self.switch_id = diff
         return self.switch_id
+
+    def game_end(self, sign):
+        self.end_screen = tk.Tk()
+        if sign == 1:
+            end_text = tk.Label(self.end_screen, text='Player wins!', font=('Helvetica', 16))
+        else:
+            end_text = tk.Label(self.end_screen, text='The computer wins!', font=('Helvetica', 16))
+
+        text = tk.Label(self.end_screen, text='Do you want to play again?')
+        restart = tk.Button(self.end_screen, text='Yes!', command=self.restart_game)
+        quit = tk.Button(self.end_screen, text='No!', command=self.quit_game)
+
+        end_text.pack()
+        text.pack(side=tk.LEFT)
+        restart.pack(side=tk.LEFT)
+        quit.pack(side=tk.LEFT)
+
+    def restart_game(self):
+        # it restarts the game
+        self.end_screen.destroy()
+        self.root.destroy()
+        main()
+
+    def quit_game(self):
+        # it destroys both screens
+        self.end_screen.destroy()
+        self.root.destroy()
+
+def main():
+    core = Core()
+    gui = GUI(core)
 
 def do_nothing():
     pass
