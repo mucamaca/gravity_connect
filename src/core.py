@@ -7,7 +7,7 @@ class Core:
         self.grid = [[Tile(i, j) for i in range(self.size)]
                      for j in range(self.size)]
         self.token_to_move = None
-    
+        self.meow = 0
     def get_token_pos(self, x, y):
         if Tile(x, y).is_special:
             return (x, y)
@@ -48,41 +48,95 @@ class Core:
     def insert_token(self, x, y, sign):
         token_pos = self.get_token_pos(x, y)
         self.grid[token_pos[0]][token_pos[1]].sign = sign
-
+        return self.end(*token_pos)            
+        
     def end(self, x ,y):
         c_sign = self.grid[x][y].sign
+        found = 0
         
-        for i in range(x - 3, x + 1):
-            if(i >= 0 and i + 3 < TABLESIZE):
-                for j in range(i, i + 4):
-                    if self.grid[j][y].sign != c_sign:
-                        return False
-        for i in range(y - 3, y + 1):
-            if(i >= 0 and i + 3 < TABLESIZE):
-                for j in range(i, i + 4):
-                    if self.grid[x][j].sign != c_sign:
-                        return False
-        for i, j in zip(range(x - 3, x + 1), range(y - 3, y + 1)):
-            if i >= 0 and j >=0 and i + 3 < TABLESIZE and j + 3 < TABLESIZE:
-                for k, l in zip(range(i, i + 4), range(j, j + 4)):
-                    if self.grid[k][l].sign != c_sign:
-                        return False
-        for i, j in zip(range(x - 3, x + 1), range(y, y - 4)):
-            if i >= 0 and j - 3 >= 0 and j < TABLESIZE and i + 3 < TABLESIZE:
-                for k, l in zip(range(i, i + 4), range(j, j - 4)):
-                    if self.grid[k][l].sign != c_sign:
-                        return False
-        return True
-        
-        
-    
+        for i in range(1, 4):
+            if x + i > 9:
+                break
+            elif self.grid[x + i][y].sign == c_sign:
+                found +=1
+            else:
+                break
+        for i in range(1, 4):
+            if x - i < 0:
+                break
+            if self.grid[x - i][y].sign == c_sign:
+                found +=1
+            else:
+                break
 
-    
-        
-            
-            
-                
-            
-        
-        
-        
+        if found >= 3:
+            return True
+
+        found = 0
+
+        for i in range(1, 4):
+            if y + i > 9:
+                break
+            if self.grid[x][y + i].sign == c_sign:
+                found +=1
+            else:
+                break
+        for i in range(1, 4):
+            if y - i < 0:
+                break
+            if self.grid[x][y - i].sign == c_sign:
+                found +=1
+            else:
+                break
+
+        if found >= 3:
+            return True
+
+        found = 0
+
+        for i in range(1, 4):
+            if x + i > 9 or y + i > 9:
+                break
+            if self.grid[x + i][y + i].sign == c_sign:
+                found += 1
+            else:
+                break
+        for i in range(1, 4):
+            if x - i < 0 or y - i < 0:
+                break
+            if self.grid[x - i][y - i].sign == c_sign:
+                found += 1
+            else:
+                break
+
+        if found >= 3:
+            return True
+
+        found = 0
+        c=0
+        for i in range(1, 4):
+            c += 1
+            self.meow += 1
+            if x + i > 9 or y - i < 0:
+                break
+            if self.grid[x + i][y - i].sign == c_sign:
+                found += 1
+                print(self.meow, "   ",i,"      ",x + i ,y - i,"beew   ",c, "         ",found)
+            else:
+                break
+        c = 0
+        for i in range(1, 4):
+            #print(self.meow, "   ",c, "      ",x + i,y - i,"meowe")
+            c+=1
+            self.meow+=1
+            if x - i < 0 or y + i > 9:
+                break
+            if self.grid[x - i][y + i].sign == c_sign:
+                found += 1
+            else:
+                break
+
+        if found >= 3:
+            return True
+
+        return False

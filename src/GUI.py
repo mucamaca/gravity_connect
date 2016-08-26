@@ -27,6 +27,7 @@ class GUI:
         mouse_y = int(event.y // self.grid)
 
         if self.valid_coords(mouse_x, mouse_y):
+<<<<<<< HEAD
             self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
             self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
 
@@ -38,6 +39,15 @@ class GUI:
             exit(0)
         self.turn = not self.turn
         self.load_map()
+=======
+            self.drop_token(mouse_x, mouse_y)
+            sign = (not self.turn) + 1
+            if self.core.insert_token(mouse_x, mouse_y, sign):
+                print("ovojemaca")
+                exit(0)
+            self.turn = not self.turn
+            self.load_map()
+>>>>>>> rewrite_win
 
     def load_map(self):
         self.map.delete('all')
@@ -71,7 +81,12 @@ class GUI:
             self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
                                       (x+1) * self.grid, (y+1) * self.grid, fill=colour)
+<<<<<<< HEAD
             
+=======
+            self.root.after(50, do_nothing())
+
+>>>>>>> rewrite_win
             x += move_dir[0]
             y += move_dir[1]
 
@@ -82,6 +97,7 @@ class GUI:
 
     def valid_coords(self, x, y):
         return not self.core.grid[x][y].sign
+<<<<<<< HEAD
 
     def increment_id(self, x, y):
         pos = self.core.get_token_pos(x, y)
@@ -92,5 +108,8 @@ class GUI:
         self.switch_id = diff
         return self.switch_id
 
+=======
+                 
+>>>>>>> rewrite_win
 def do_nothing():
     pass
