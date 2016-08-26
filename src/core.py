@@ -58,7 +58,7 @@ class Core:
                 return (tmp_x, tmp_y)
 
     def valid_coords(self, x, y):
-        if tuple([x, y]) in self.valid_list:
+        if tuple([x, y]) in self.valid_list and self.grid[x][y].sign == 0:
             return True
         return False
 
