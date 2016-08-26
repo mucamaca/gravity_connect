@@ -64,11 +64,7 @@ class Core:
                     return (x - i*dir[0], y - i*dir[1])
 
     def valid_coords(self, x, y):
-<<<<<<< HEAD
-        if tuple([x, y]) in self.valid_list and self.grid[x][y].sign == 0:
-=======
         if (x, y) in self.valid_list and self.grid[x][y].sign == 0:
->>>>>>> rewrite_all
             return True
         return False
 
