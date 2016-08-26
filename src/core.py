@@ -7,7 +7,9 @@ class Core:
         self.grid = [[Tile(i, j) for i in range(self.size)]
                      for j in range(self.size)]
         self.token_to_move = None
-        self.meow = 0
+
+    def valid_coords(self, x, y):
+        return not self.grid[x][y].sign
 
     def get_token_pos(self, x, y):
         if Tile(x, y).is_special:
