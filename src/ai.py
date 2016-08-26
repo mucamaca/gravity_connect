@@ -39,7 +39,8 @@ class AI:
 
         return ret_val
 
-    def update_scores(self, score):
+    def update_scores(self, ):
+        
         
 
     def count_me(self, tup):
@@ -55,21 +56,23 @@ class AI:
             if self.grid[i][j].sign == self.enemy:
                 count += 1
         return count
+
+    def proper_score(b_score, factor):
+        return b_score // (2**factor)
     
     def tup_score(self, tup, x, y):
         me = self.count_me(tup)
         enemy = self.count_enemy(tup)
         if me and enemy:
             return 0
+        elif enemy:
+            return self.proper_score(self.score_list_enemy[enemy], self.get_req_moves(tup))
+        elif me:
+            return self.proper_score(self.score_list_me[me], self.get_req_moves(tup))
         else:
-            if enemy:
-                return self.score_list_enemy[self.get_req_moves(tup)][enemy]
-            elif me:
-                return self.score_list_me[self.get_req_moves(tup)][me] 
-                
-            
-        
-        
+            if not self.init:
+                raise Exception, "neki je narobe"
+            return 7
 
     def eval_tuples(self, x, y):
         lst = self.list_of_tuples()
