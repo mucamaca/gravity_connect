@@ -39,6 +39,10 @@ class GUI:
             self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
             self.root.after(self.increment_id(coords[0], coords[1]) * 250, self.place_token, coords[0], coords[1])
 
+        if self.core.valid_coords(mouse_x, mouse_y):
+            self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
+            self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
+
 
     def place_token(self, x, y):
         sign = (not self.turn) + 1
@@ -84,9 +88,6 @@ class GUI:
             y += move_dir[1]
 
             self.root.after(250, self.drop_token, x, y, pos)
-
-    def valid_coords(self, x, y):
-        return not self.core.grid[x][y].sign
 
     def increment_id(self, x, y):
         pos = self.core.get_token_pos(x, y)
