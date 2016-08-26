@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-from core import Core.get_token_pos as get_token_pos
-=======
 from core import Core
->>>>>>> remove_token
 
 class AI:
     score_list_enemy = [7, 16, 400, 1800, 100000]
@@ -10,12 +6,24 @@ class AI:
     init = 1
 
     def __init__(self, cor):
-        self.core = cor 
+        self.core = cor
+
+    def get_req_moves(tup):
+        total = 0
+        diff = []
+        obs = []
+        for i in range(4):
+            diff[i] = abs(self.core.get_token_pos(tup[i][0], tup[i][1])[0] - tup[i][0]) + abs(self.core.get_token_pos(tup[i][0], tup[i][1])[1] + tup[i][1])
+            for j in range(diff[i]):
+                if self.grid[tup[i][0] + j*self.grid[tup[i][0]][tup[i][1]].where_is()[0]][tup[i][1] + j*self.grid[tup[i][0]][tup[i][1]].where_is()[1]].sign != 0:
+                    obs[i] += 1
+            diff[i] -= obs[i]
+            total += diff[i]
+        return total 
 
     def AI_next_move(grid, x ,y):
         self.grid = grid[:]
         eval_tuples(x, y)
-        
         
     def get_tuples(self, i, j, k ,l):
         if i == k:
@@ -49,7 +57,7 @@ class AI:
     def update_scores(self, tup, x, y):
         old_tup = tup_score(tup, x, y)
 
-        pos = cor.get_token_pos(x, y)
+        pos = self.core.get_token_pos(x, y)
 
         self.insert_token(x, y, self.grid[pos[0]][pos[1]].sign)
         new_tup = tup_score(tup, x, y)
@@ -88,7 +96,7 @@ class AI:
             return 7
 
     def eval_tuples(self, x, y):
-        lst = self.list_of_tuples(cor.get_token_pos(x, y))
+        lst = self.list_of_tuples(self.core.get_token_pos(x, y))
         for i in lst:
             self.update_scores(self.tup_score(i, x, y))
 
