@@ -128,7 +128,5 @@ def eval_tuples(core, x, y):
     lst = list_of_tuples(Core.get_token_pos(x, y))
     for i in lst:
         update_scores(tup_score(core, i, x, y))
-
-
-
+>>>>>>> rewrite_all
 
