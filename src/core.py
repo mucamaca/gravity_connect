@@ -7,7 +7,7 @@ class Core:
         self.grid = [[Tile(i, j) for i in range(self.size)]
                      for j in range(self.size)]
         self.token_to_move = None
-    
+        self.meow = 0
     def get_token_pos(self, x, y):
         if Tile(x, y).is_special:
             return (x, y)
@@ -69,7 +69,7 @@ class Core:
             else:
                 break
 
-        if found > 2:
+        if found >= 3:
             return True
 
         found = 0
@@ -89,7 +89,7 @@ class Core:
             else:
                 break
 
-        if found > 2:
+        if found >= 3:
             return True
 
         found = 0
@@ -109,19 +109,26 @@ class Core:
             else:
                 break
 
-            if found > 2:
-                return True
+        if found >= 3:
+            return True
 
         found = 0
-
+        c=0
         for i in range(1, 4):
+            c += 1
+            self.meow += 1
             if x + i > 9 or y - i < 0:
                 break
             if self.grid[x + i][y - i].sign == c_sign:
                 found += 1
+                print(self.meow, "   ",i,"      ",x + i ,y - i,"beew   ",c, "         ",found)
             else:
                 break
+        c = 0
         for i in range(1, 4):
+            #print(self.meow, "   ",c, "      ",x + i,y - i,"meowe")
+            c+=1
+            self.meow+=1
             if x - i < 0 or y + i > 9:
                 break
             if self.grid[x - i][y + i].sign == c_sign:
@@ -129,7 +136,7 @@ class Core:
             else:
                 break
 
-            if found > 2:
-                return True
+        if found >= 3:
+            return True
 
-            return False
+        return False
