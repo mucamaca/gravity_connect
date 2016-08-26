@@ -4,23 +4,23 @@ from constants import *
 class Core:
     size = TABLESIZE
     def __init__(self):
-        self.valid_coords = []
+        self.valid_list = []
         for i in range(TABLESIZE):
             for j in range (TABLESIZE):
                 if i == j:
-                    self.valid_coords.append(tuple(i, j))
-                    if i + 1 > 9 or j + 1 > 9:
-                        self.valid_coords.append(tuple(i+1, j))
-                        self.valid_coords.append(tuple(i, j+1))
+                    self.valid_list.append(tuple([i, j]))
+                    if not (i + 1 > 9 or j + 1 > 9):
+                        self.valid_list.append(tuple([i+1, j]))
+                        self.valid_list.append(tuple([i, j+1]))
                 if i + j + 1 == TABLESIZE:
-                    self.valid_coords.append(tuple(i, j))
-                    if i - 1 < 0 or j - 1 < 0:
-                        self.valid_coords.append(tuple(i-1, j))
-                        self.valid_coords.append(tuple(i, j-1))
+                    self.valid_list.append(tuple([i, j]))
+                    if not (i + 1 > 9 or j - 1 < 0):
+                        self.valid_list.append(tuple([i+1, j]))
+                        self.valid_list.append(tuple([i, j-1]))
+        print(self.valid_list)
 
         self.grid = [[Tile(i, j) for i in range(self.size)]
                      for j in range(self.size)]
-        self.token_to_move = Non0
 
     def get_token_pos(self, x, y):
         if Tile(x, y).is_special:
@@ -59,7 +59,7 @@ class Core:
                 return (tmp_x, tmp_y)
 
     def valid_coords(self, x, y):
-        if tuple(x, y) in self.valid_coords:
+        if tuple([x, y]) in self.valid_list:
             return True
         return False
 
