@@ -8,7 +8,7 @@ class AI:
                         [7, 1, 25, 112, 6250],
                         [7, 0, 12, 56, 3125],
                         [7, 0, 6, 28, 1500]]
-    score_list_me =    [[7, 36, 800, 15000,  1000000],
+    score_list_me =    [[7, 36, 800, 15000,  1000000]]
                         [7, 18, 400, 7500, 500000],
                         [7, 9, 200, 3750, 250000],
                         [7, 4, 100, 1850, 125000],
@@ -55,11 +55,22 @@ class AI:
         
 
     def count_me(self, tup):
+        count = 0
         for i, j in tup:
-            if self.grid[i][j].sign = 
+            if self.grid[i][j].sign == self.me:
+                count += 1
+        return count
+    
+    def count_enemy(self, tup):
+        count = 0
+        for i, j in tup:
+            if self.grid[i][j].sign == self.enemy:
+                count += 1
+        return count
+    
     def tup_score(self, tup, x, y):
-        me = self.count_me(tup, self.me)
-        enemy = self.count_enemy(tup, self.enemy)
+        me = self.count_me(tup)
+        enemy = self.count_enemy(tup)
         if me and enemy:
             return 0
         else:
