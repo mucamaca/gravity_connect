@@ -70,7 +70,7 @@ class Core:
                 break
 
         if found >= 3:
-            return True
+            return 1
 
         found = 0
 
@@ -90,7 +90,7 @@ class Core:
                 break
 
         if found >= 3:
-            return True
+            return 2
 
         found = 0
 
@@ -110,7 +110,7 @@ class Core:
                 break
 
         if found >= 3:
-            return True
+            return 3
 
         found = 0
         c=0
@@ -121,7 +121,7 @@ class Core:
                 break
             if self.grid[x + i][y - i].sign == c_sign:
                 found += 1
-                print(self.meow, "   ",i,"      ",x + i ,y - i,"beew   ",c, "         ",found)
+                #print(self.meow, "   ",i,"      ",x + i ,y - i,"beew   ",c, "         ",found)
             else:
                 break
         c = 0
@@ -137,6 +137,6 @@ class Core:
                 break
 
         if found >= 3:
-            return True
+            return 4
 
         return False
