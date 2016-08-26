@@ -2,13 +2,10 @@ from constants import *
 
 
 class Tile:
-    empty = 0
-    circle = 1
-    cross = 2
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.sign = self.empty
+        self.sign = 0
         
         if x == y or x + y + 1 == TABLESIZE:
             self.is_special = True
