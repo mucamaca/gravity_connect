@@ -17,7 +17,6 @@ class Core:
                     if not (i + 1 > 9 or j - 1 < 0):
                         self.valid_list.append(tuple([i+1, j]))
                         self.valid_list.append(tuple([i, j-1]))
-        print(self.valid_list)
 
         self.grid = [[Tile(i, j) for i in range(self.size)]
                      for j in range(self.size)]
@@ -66,7 +65,11 @@ class Core:
     def insert_token(self, x, y, sign):
         token_pos = self.get_token_pos(x, y)
         self.grid[token_pos[0]][token_pos[1]].sign = sign
-        return self.end(*token_pos)            
+        return self.end(*token_pos)
+
+    def remove_token(self, x, y):
+        pos = self.get_token_pos(x, y)
+        self.grid[pos[0]][pos[1]].sign = 0            
         
     def end(self, x, y):
         c_sign = self.grid[x][y].sign
