@@ -3,14 +3,17 @@ from core import Core
 from constants import *
 
 class GUI:
-    def __init__(self, core):
+    def __init__(self, core, ai):
         self.core = core
+        self.ai = ai
         self.height, self.width = FRAMESIZE, FRAMESIZE
         self.grid = self.height / TABLESIZE
         self.root = tk.Tk()
         self.root.title("Gravity Connect")
         self.turn = True
         self.switch_id = 0
+        self.mouse_x = 0
+        self.mouse_y = 0
         
         self.make_canvas()
 
@@ -24,12 +27,18 @@ class GUI:
         self.load_map() 
 
     def mouse_click(self, event):
-        mouse_x = int(event.x // self.grid) 
-        mouse_y = int(event.y // self.grid)
+        if self.turn:
+            self.mouse_x = int(event.x // self.grid) 
+            self.mouse_y = int(event.y // self.grid)
 
-        if self.valid_coords(mouse_x, mouse_y):
-            self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
-            self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
+            if self.valid_coords(self.mouse_x, self.mouse_y):
+                self.drop_token(self.mouse_x, self.mouse_y, self.core.get_token_pos(self.mouse_x, self.mouse_y))
+                self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250, self.place_token, self.mouse_x, self.mouse_y)
+        else:
+            coords = self.ai.next_move(self.core.grid, self.mouse_x, self.self.mouse_y)
+            self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
+            self.root.after(self.increment_id(coords[0], coords[1]) * 250, self.place_token, coords[0], coords[1])
+
 
     def place_token(self, x, y):
         sign = (not self.turn) + 1
@@ -75,8 +84,6 @@ class GUI:
             y += move_dir[1]
 
             self.root.after(250, self.drop_token, x, y, pos)
-        else:
-            pass
 
     def valid_coords(self, x, y):
         return not self.core.grid[x][y].sign
