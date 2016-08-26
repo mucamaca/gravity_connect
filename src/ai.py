@@ -1,8 +1,8 @@
 from core import Core.get_token_pos as get_token_pos
 
 class AI:
-    score_list_enemy = [[7, 16, 400, 1800, 100000]]
-    score_list_me =    [[7, 36, 800, 15000,  1000000]]
+    score_list_enemy = [7, 16, 400, 1800, 100000]
+    score_list_me =    [7, 36, 800, 15000,  1000000]
 
     def AI_next_move(grid, x ,y):
         self.grid = grid[:]
