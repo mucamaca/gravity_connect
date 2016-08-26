@@ -1,5 +1,6 @@
 import tkinter as tk
 from core import Core
+from tile import Tile
 from constants import *
 
 class GUI:
@@ -23,44 +24,37 @@ class GUI:
 
         self.load_map() 
 
+    def load_map(self):
+            self.map.delete('all')
+            # Draws the grid
+            for i in range(TABLESIZE):
+                self.map.create_line(0, i * self.grid, TABLESIZE * self.grid, i * self.grid)
+                self.map.create_line(i * self.grid, 0, i * self.grid, TABLESIZE * self.grid)
+
+            # Draws the tokens and special fields:
+            for i in range(TABLESIZE):
+                for j in range(TABLESIZE):
+                    if self.core.grid[i][j].sign == 0:
+                        colour = "white"
+                    if self.core.grid[i][j].is_special:
+                        colour = "gray"
+                    if self.core.grid[i][j].sign == 1:
+                        colour = COLOUR_1
+                    if self.core.grid[i][j].sign == 2:
+                        colour = COLOUR_2
+                    self.map.create_rectangle(i * self.grid, j * self.grid,
+                                            (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
+
     def mouse_click(self, event):
         mouse_x = int(event.x // self.grid) 
         mouse_y = int(event.y // self.grid)
 
-        if self.core.valid_coords(mouse_x, mouse_y):
-            self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
+        if Core.valid_coords(mouse_x, mouse_y):
+            self.drop_token(mouse_x, mouse_y, Core.get_token_pos(mouse_x, mouse_y))
             self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
 
-    def place_token(self, x, y):
-        sign = (not self.turn) + 1
-        if self.core.insert_token(x, y, sign):
-            self.game_end(sign)
-        self.turn = not self.turn
-        self.load_map()
-
-    def load_map(self):
-        self.map.delete('all')
-        # Draws the grid
-        for i in range(TABLESIZE):
-            self.map.create_line(0, i * self.grid, TABLESIZE * self.grid, i * self.grid)
-            self.map.create_line(i * self.grid, 0, i * self.grid, TABLESIZE * self.grid)
-
-        # Draws the tokens and special fields:
-        for i in range(TABLESIZE):
-            for j in range(TABLESIZE):
-                if self.core.grid[i][j].sign == 0:
-                    colour = "white"
-                if self.core.grid[i][j].is_special:
-                    colour = "gray"
-                if self.core.grid[i][j].sign == 1:
-                    colour = COLOUR_1
-                if self.core.grid[i][j].sign == 2:
-                    colour = COLOUR_2
-                self.map.create_rectangle(i * self.grid, j * self.grid,
-                                        (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
-
     def drop_token(self, x, y, pos):
-        move_dir = self.core.grid[x][y].where_is()
+        move_dir = Tile.where_is(x, y)
         if (x != pos[0]) or (y != pos[1]):
             if self.turn:
                 colour = COLOUR_1
@@ -75,17 +69,24 @@ class GUI:
             y += move_dir[1]
 
             self.root.after(250, self.drop_token, x, y, pos)
-        else:
-            pass
 
     def increment_id(self, x, y):
-        pos = self.core.get_token_pos(x, y)
+        pos = Core.get_token_pos(x, y)
         if x == pos[0]:
             diff = abs(y - pos[1])
         else:
             diff = abs(x - pos[0])
         self.switch_id = diff
         return self.switch_id
+
+    def place_token(self, x, y):
+        sign = (not self.turn) + 1
+        pos = Core.get_token_pos(x, y)
+        self.core.insert_token(*pos, sign)
+        if self.core.end(*pos):
+            self.game_end(sign)
+        self.turn = not self.turn
+        self.load_map()
 
     def game_end(self, sign):
         self.end_screen = tk.Tk()
