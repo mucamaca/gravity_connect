@@ -2,6 +2,7 @@ import tkinter as tk
 from core import Core
 from tile import Tile
 from constants import *
+from ai import minimax
 
 class GUI:
     def __init__(self, core, ai):
@@ -59,7 +60,7 @@ class GUI:
                 self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250,
                                 self.place_token, self.mouse_x, self.mouse_y)
         else:
-            coords = minimax(self.core, self.turn)
+            coords = minimax(self.core, self.turn, MAXDEPTH)
             self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
             self.root.after(self.increment_id(coords[0], coords[1]) * 250,
                             self.place_token, coords[0], coords[1])

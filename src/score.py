@@ -5,8 +5,14 @@ score_list_enemy = [7, 16, 400, 1800, 100000]
 score_list_me =    [7, 36, 800, 15000,  1000000]
 init = 1
 
-def score(core):
-    
+def score(core, sign):
+    scor = 0
+    for i,j in core.valid_list:
+        if core.grid[i][j].sign == 0:
+            pos=core.get_token_pos(i,j)
+            for k in list_of_tuples(core, *pos):
+                scor += tup_score(k)
+            
         
 
 def count(core, tup, sign):
@@ -18,8 +24,13 @@ def count(core, tup, sign):
            
 
 
-def tup_score(self, tup):
-    me = count[sign]
+def tup_score(core, tup, sign):
+    if sign == 2:
+        me = count(2)
+        enemy = count(1)
+    else:
+        enemy = count(2)
+        me = count(1)
     if me and enemy:
         return 0
     elif enemy:
