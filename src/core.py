@@ -24,7 +24,7 @@ class Core:
     def get_token_pos(self, x, y):
         if Tile(x, y).is_special:
             return (x, y)
-        where_to_move = self.grid[x][y].where_is()
+        where_to_move = Tile.where_is(x, y)
         tmp_x = x
         tmp_y = y        
         if where_to_move[0] == -1:
@@ -56,9 +56,9 @@ class Core:
                 return (tmp_x, tmp_y - 1)
             else:
                 return (tmp_x, tmp_y)
-
+            
     def get_click_pos(self, x, y):
-            dir = self.grid[x][y].where_is()
+            dir = Tile.where_is(x, y)
             for i in range(0, 4):
                 if (x - i*dir[0], y - i*dir[1]) in self.valid_list:
                     return (x - i*dir[0], y - i*dir[1])
@@ -68,19 +68,10 @@ class Core:
             return True
         return False
 
-    def get_click_pos(self, x, y):
-            dir = self.grid[x][y].where_is()
-            for i in range(0, 4):
-                if (x - i*dir[0], y - i*dir[1]) in self.valid_list:
-                    return (x - i*dir[0], y - i*dir[1])
-
     def insert_token(self, x, y, sign):
-        token_pos = self.get_token_pos(x, y)
-        self.grid[token_pos[0]][token_pos[1]].sign = sign
-        return self.end(*token_pos)
+        self.grid[x][y].sign = sign
 
     def remove_token(self, x, y):
-        pos = self.get_token_pos(x, y)
         self.grid[pos[0]][pos[1]].sign = 0            
         
     def end(self, x, y):

@@ -5,9 +5,8 @@ from constants import *
 from ai import minimax
 
 class GUI:
-    def __init__(self, core, ai):
+    def __init__(self, core):
         self.core = core
-        self.ai = ai
         self.height, self.width = FRAMESIZE, FRAMESIZE
         self.grid = self.height / TABLESIZE
         self.root = tk.Tk()
@@ -54,7 +53,7 @@ class GUI:
             self.mouse_x = int(event.x // self.grid) 
             self.mouse_y = int(event.y // self.grid)
 
-            if self.valid_coords(self.mouse_x, self.mouse_y):
+            if self.core.valid_coords(self.mouse_x, self.mouse_y):
                 self.drop_token(self.mouse_x, self.mouse_y,
                                 self.core.get_token_pos(self.mouse_x, self.mouse_y))
                 self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250,
@@ -64,12 +63,7 @@ class GUI:
             self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
             self.root.after(self.increment_id(coords[0], coords[1]) * 250,
                             self.place_token, coords[0], coords[1])
-
-        if Core.valid_coords(mouse_x, mouse_y):
-            self.drop_token(mouse_x, mouse_y, Core.get_token_pos(mouse_x, mouse_y))
-            self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
-                            self.place_token, mouse_x, mouse_y)
-
+            
     def drop_token(self, x, y, pos):
         move_dir = Tile.where_is(x, y)
         if (x != pos[0]) or (y != pos[1]):
@@ -88,7 +82,7 @@ class GUI:
             self.root.after(250, self.drop_token, x, y, pos)
 
     def increment_id(self, x, y):
-        pos = Core.get_token_pos(x, y)
+        pos = self.core.get_token_pos(x, y)
         if x == pos[0]:
             diff = abs(y - pos[1])
         else:
@@ -98,7 +92,7 @@ class GUI:
 
     def place_token(self, x, y):
         sign = (not self.turn) + 1
-        pos = Core.get_token_pos(x, y)
+        pos = self.core.get_token_pos(x, y)
         self.core.insert_token(*pos, sign)
         if self.core.end(*pos):
             self.game_end(sign)
