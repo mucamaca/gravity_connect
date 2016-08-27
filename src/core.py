@@ -8,16 +8,28 @@ class Core:
         for i in range(TABLESIZE):
             for j in range (TABLESIZE):
                 if i == j:
-                    self.valid_list.append(tuple([i, j]))
+                    self.valid_list.append((i, j))
                     if not (i + 1 > 9 or j + 1 > 9):
-                        self.valid_list.append(tuple([i+1, j]))
-                        self.valid_list.append(tuple([i, j+1]))
+                        self.valid_list.append((i+1, j))
+                        self.valid_list.append((i, j+1))
                 if i + j + 1 == TABLESIZE:
-                    self.valid_list.append(tuple([i, j]))
+                    self.valid_list.append((i, j))
                     if not (i + 1 > 9 or j - 1 < 0):
-                        self.valid_list.append(tuple([i+1, j]))
-                        self.valid_list.append(tuple([i, j-1]))
+                        self.valid_list.append((i+1, j))
+                        self.valid_list.append((i, j-1))
+        print(len(self.valid_list),
+              
+              self.valid_list.remove((TABLESIZE//2, TABLESIZE//2)),
+              self.valid_list.remove((TABLESIZE//2-1, TABLESIZE//2)),
+              self.valid_list.remove((TABLESIZE//2, TABLESIZE//2-1)),
+              self.valid_list.remove((TABLESIZE//2-1,TABLESIZE//2-1)),
 
+              self.valid_list.remove((TABLESIZE//2, TABLESIZE//2)),
+              self.valid_list.remove((TABLESIZE//2-1, TABLESIZE//2)),
+              self.valid_list.remove((TABLESIZE//2, TABLESIZE//2-1)),
+              self.valid_list.remove((TABLESIZE//2-1,TABLESIZE//2-1)),
+              len(self.valid_list)
+        )
         self.grid = [[Tile(i, j) for i in range(self.size)]
                      for j in range(self.size)]
 
