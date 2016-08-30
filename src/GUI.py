@@ -11,6 +11,7 @@ class GUI:
         self.root.title("Gravity Connect")
         self.turn = True
         self.switch_id = 0
+        self.is_gameover = False
         
         self.make_canvas()
 
@@ -27,7 +28,7 @@ class GUI:
         mouse_x = int(event.x // self.grid) 
         mouse_y = int(event.y // self.grid)
 
-        if self.core.valid_coords(mouse_x, mouse_y):
+        if self.core.valid_coords(mouse_x, mouse_y) and not self.is_gameover:
             self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
             self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
 
@@ -88,11 +89,9 @@ class GUI:
         return self.switch_id
 
     def game_end(self, sign):
+        self.is_gameover = True
         self.end_screen = tk.Tk()
-        if sign == 1:
-            end_text = tk.Label(self.end_screen, text='Player wins!', font=('Helvetica', 16))
-        else:
-            end_text = tk.Label(self.end_screen, text='The computer wins!', font=('Helvetica', 16))
+        end_text = tk.Label(self.end_screen, text=["Player", 'Computer'][sign - 1]+' wins!', font=('Helvetica', 16))
 
         text = tk.Label(self.end_screen, text='Do you want to play again?')
         restart = tk.Button(self.end_screen, text='Yes!', command=self.restart_game)
