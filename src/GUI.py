@@ -100,6 +100,7 @@ class GUI:
 
     def game_end(self, sign):
         self.end_screen = tk.Tk()
+        self.end_screen.protocol("WM_DELETE_WINDOW", self.quit_game)
         if sign:
             end_text = tk.Label(self.end_screen, text='Player wins!', font=('Helvetica', 16))
         else:
@@ -107,12 +108,12 @@ class GUI:
 
         text = tk.Label(self.end_screen, text='Do you want to play again?')
         restart = tk.Button(self.end_screen, text='Yes!', command=self.restart_game)
-        quit = tk.Button(self.end_screen, text='No!', command=self.quit_game)
+        g_exit = tk.Button(self.end_screen, text='No!', command=self.quit_game)
 
         end_text.pack()
         text.pack(side=tk.LEFT)
         restart.pack(side=tk.LEFT)
-        quit.pack(side=tk.LEFT)
+        g_exit.pack(side=tk.LEFT)
 
     def restart_game(self):
         # it restarts the game
