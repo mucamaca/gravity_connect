@@ -1,6 +1,5 @@
 import tkinter as tk
 from core import Core
-from tile import Tile
 from constants import *
 from ai import minimax
 
@@ -37,13 +36,13 @@ class GUI:
             # Draws the tokens and special fields:
             for i in range(TABLESIZE):
                 for j in range(TABLESIZE):
-                    if self.core.grid[i][j].sign == 0:
+                    if self.core.grid[i][j] == 0:
                         colour = "white"
-                    if self.core.grid[i][j].is_special:
+                    if Core.is_special(i, j):
                         colour = "gray"
-                    if self.core.grid[i][j].sign == 1:
+                    if self.core.grid[i][j] == 1:
                         colour = COLOUR_1
-                    if self.core.grid[i][j].sign == 2:
+                    if self.core.grid[i][j] == 2:
                         colour = COLOUR_2
                     self.map.create_rectangle(i * self.grid, j * self.grid,
                                             (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
@@ -65,7 +64,7 @@ class GUI:
                             self.place_token, coords[0], coords[1])
             
     def drop_token(self, x, y, pos):
-        move_dir = Tile.where_is(x, y)
+        move_dir = Core.where_is(x, y)
         if (x != pos[0]) or (y != pos[1]):
             if self.turn:
                 colour = COLOUR_1
@@ -91,7 +90,7 @@ class GUI:
         return self.switch_id
 
     def place_token(self, x, y):
-        sign = (not self.turn) + 1
+        self.core.grid[x][y]
         pos = self.core.get_token_pos(x, y)
         self.core.insert_token(*pos, sign)
         if self.core.end(*pos):
@@ -101,7 +100,7 @@ class GUI:
 
     def game_end(self, sign):
         self.end_screen = tk.Tk()
-        if sign == 1:
+        if sign:
             end_text = tk.Label(self.end_screen, text='Player wins!', font=('Helvetica', 16))
         else:
             end_text = tk.Label(self.end_screen, text='The computer wins!', font=('Helvetica', 16))
@@ -119,6 +118,7 @@ class GUI:
         # it restarts the game
         self.end_screen.destroy()
         self.root.destroy()
+        del self.core
         main()
 
     def quit_game(self):
