@@ -1,4 +1,3 @@
-from tile import Tile
 from constants import *
 
 class Core:
@@ -18,8 +17,27 @@ class Core:
                         self.valid_list.append(tuple([i+1, j]))
                         self.valid_list.append(tuple([i, j-1]))
 
-        self.grid = [[Tile(i, j) for i in range(self.size)]
-                     for j in range(self.size)]
+        self.grid = [[0] * TABLESIZE] * TABLESIZE
+        
+    @staticmethod    
+    def is_special(x, y):
+        if x == y or x + y + 1 == TABLESIZE:
+            return True
+        else:
+            return False
+    @staticmethod
+    def where_is(x, y):
+        if y < x and y + x + 1 < TABLESIZE:
+            return (1, 0)
+        if y > x and y + x + 1 < TABLESIZE:
+            return (0, 1)
+        if y > x and y + x + 1 > TABLESIZE:
+            return (-1, 0)
+        if y < x and y + x + 1 > TABLESIZE:
+            return (0, -1)
+        else:
+            return (0, 0)
+
 
     def get_token_pos(self, x, y):
         if Tile(x, y).is_special:
