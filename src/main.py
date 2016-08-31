@@ -1,4 +1,4 @@
-#!/usr/bin/ipython3 
+#!/usr/bin/python3 
 
 from core import Core
 from GUI import GUI
