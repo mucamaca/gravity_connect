@@ -1,7 +1,6 @@
 from score import score
 
 
-
 def minimax(core, turn, depth):
     if turn:
         sign = 1
