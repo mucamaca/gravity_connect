@@ -7,7 +7,7 @@ class GUI:
     def __init__(self, core):
         self.core = core
         self.height, self.width = FRAMESIZE, FRAMESIZE
-        self.grid = self.height / TABLESIZE
+        self.cellsize = CELLSIZE
         self.root = tk.Tk()
         self.root.title("Gravity Connect")
         self.turn = True
@@ -30,8 +30,8 @@ class GUI:
             self.map.delete('all')
             # Draws the grid
             for i in range(TABLESIZE):
-                self.map.create_line(0, i * self.grid, TABLESIZE * self.grid, i * self.grid)
-                self.map.create_line(i * self.grid, 0, i * self.grid, TABLESIZE * self.grid)
+                self.map.create_line(0, i * self.cellsize, TABLESIZE * self.cellsize, i * self.cellsize)
+                self.map.create_line(i * self.cellsize, 0, i * self.cellsize, TABLESIZE * self.cellsize)
 
             # Draws the tokens and special fields:
             for i in range(TABLESIZE):
@@ -44,25 +44,25 @@ class GUI:
                         colour = COLOUR_1
                     if self.core.grid[i][j] == 2:
                         colour = COLOUR_2
-                    self.map.create_rectangle(i * self.grid, j * self.grid,
-                                            (i + 1) * self.grid, (j + 1) * self.grid, fill=colour)
+                    self.map.create_rectangle(i * self.cellsize, j * self.cellsize,
+                                            (i + 1) * self.cellsize, (j + 1) * self.cellsize, fill=colour)
 
     def mouse_click(self, event):
-        if self.turn:
-            self.mouse_x = int(event.x // self.grid) 
-            self.mouse_y = int(event.y // self.grid)
+        self.mouse_x = int(event.x // self.cellsize) 
+        self.mouse_y = int(event.y // self.cellsize)
+        
+        if self.core.valid_coords(self.mouse_x, self.mouse_y):
+            self.drop_token(self.mouse_x, self.mouse_y,
+                            self.core.get_token_pos(self.mouse_x, self.mouse_y))
+            self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250,
+                            self.place_token, self.mouse_x, self.mouse_y)
 
-            if self.core.valid_coords(self.mouse_x, self.mouse_y):
-                self.drop_token(self.mouse_x, self.mouse_y,
-                                self.core.get_token_pos(self.mouse_x, self.mouse_y))
-                self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250,
-                                self.place_token, self.mouse_x, self.mouse_y)
-        else:
-            coords = minimax(self.core, self.turn, MAXDEPTH)
-            self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
-            self.root.after(self.increment_id(coords[0], coords[1]) * 250,
-                            self.place_token, coords[0], coords[1])
-            
+        self.turn = not self.turn
+        # coords = minimax(self.core, self.turn, MAXDEPTH)
+        # self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
+        # self.root.after(self.increment_id(coords[0], coords[1]) * 250,
+        #                 self.place_token, coords[0], coords[1])
+        # self.turn = not self.turn
     def drop_token(self, x, y, pos):
         move_dir = Core.where_is(x, y)
         if (x != pos[0]) or (y != pos[1]):
@@ -72,8 +72,8 @@ class GUI:
                 colour = COLOUR_2
             
             self.load_map()
-            self.map.create_rectangle(x * self.grid, y * self.grid,
-                                      (x+1) * self.grid, (y+1) * self.grid, fill=colour)
+            self.map.create_rectangle(x * self.cellsize, y * self.cellsize,
+                                      (x+1) * self.cellsize, (y+1) * self.cellsize, fill=colour)
             
             x += move_dir[0]
             y += move_dir[1]
@@ -90,9 +90,10 @@ class GUI:
         return self.switch_id
 
     def place_token(self, x, y):
-        self.core.grid[x][y]
         pos = self.core.get_token_pos(x, y)
-        self.core.insert_token(*pos, sign)
+        self.core.insert_token(*pos, not self.turn + 1)
+        if (x, y) == pos:
+            self.core.valid_list.remove(pos)
         if self.core.end(*pos):
             self.game_end(sign)
         self.turn = not self.turn
