@@ -1,5 +1,8 @@
 TABLESIZE = 10
 
+if TABLESIZE % 2:
+    raise ValueError("TABLESIZE must be an even number!" )
+
 CELLSIZE = 40
 
 FRAMESIZE = TABLESIZE * CELLSIZE
