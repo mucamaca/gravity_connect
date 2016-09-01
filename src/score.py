@@ -1,5 +1,4 @@
 from core import Core
-from tile import Tile
 from constants import *
 
 score_list_enemy = [7, 16, 400, 1800, 100000]
