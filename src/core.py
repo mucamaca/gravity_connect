@@ -4,38 +4,38 @@ class Core:
     size = TABLESIZE
     def __init__(self):
         self.valid_list = []
-        for i in range(self.size):
-            for j in range (self.size):
-                if i == j and i != self.size // 2 and i != self.size // 2 - 1:
-                    self.valid_list.append((i, j))
-                    if i + 1 <= 9 or j + 1 <= 9:
-                        self.valid_list.append((i+1, j))
-                        self.valid_list.append((i, j+1))
-                if i + j + 1 == self.size and (
-                        (not self.size // 2 - 2 < i < self.size // 2 + 1)  or
-                        (not self.size // 2 - 2 < j < self.size // 2 + 1)):
-                    self.valid_list.append((i, j))
-                    if i + 1 <= 9 or j - 1 >= 0  :
-                        self.valid_list.append((i+1, j))
-                        self.valid_list.append((i, j-1))
+        for i, j in zip(range(self.size),range(self.size)):
+            if i != self.size // 2 and i != self.size // 2 - 1:
+                self.valid_list.append((i, j))
+            if i + 1 < self.size and i + 1 != self.size // 2:
+                self.valid_list.append((i+1, j))
+                self.valid_list.append((i, j+1))
+        for i, j in zip(range(self.size), range(self.size - 1, -1, -1)):
+            if i + j + 1 == self.size and ( 
+                    not self.size // 2 - 2 < j < self.size // 2 + 1):
+                self.valid_list.append((i, j))
+            if i + 1 < self.size and (
+                    not self.size // 2 - 1 < j < self.size // 2 + 1):
+                self.valid_list.append((i+1, j))
+                self.valid_list.append((i, j-1))
 
-        self.grid = [[0] * self.size] * self.size
+        self.grid = [[0] * self.size for i in range(self.size)]
         
     @staticmethod    
     def is_special(x, y):
-        if x == y or x + y + 1 == self.size:
+        if x == y or x + y + 1 == TABLESIZE:
             return True
         else:
             return False
     @staticmethod
     def where_is(x, y):
-        if y < x and y + x + 1 < self.size:
+        if y < x and y + x + 1 < TABLESIZE:
             return (1, 0)
-        if y > x and y + x + 1 < self.size:
+        if y > x and y + x + 1 < TABLESIZE:
             return (0, 1)
-        if y > x and y + x + 1 > self.size:
+        if y > x and y + x + 1 > TABLESIZE:
             return (-1, 0)
-        if y < x and y + x + 1 > self.size:
+        if y < x and y + x + 1 > TABLESIZE:
             return (0, -1)
         else:
             return (0, 0)
