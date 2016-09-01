@@ -8,17 +8,18 @@ init = 1
 def score(core, sign):
     scor = 0
     for i,j in core.valid_list:
-        if core.grid[i][j].sign == 0:
+        if core.grid[i][j] == 0:
             pos=core.get_token_pos(i,j)
             for k in list_of_tuples(core, *pos):
                 scor += tup_score(core, k, sign)
+    return scor
             
         
 
 def count(core, tup, sign):
     _count = 0
     for i, j in tup:
-        if core.grid[i][j].sign == sign:
+        if core.grid[i][j] == sign:
             _count += 1
     return _count
            
@@ -74,24 +75,25 @@ def get_tuples(i, j, k ,l):
 
 
 # workin'
+# can be much optimized
 def get_req_moves(core, tup):
     sm = val = 0
     for x,y in tup:
-        if Tile(x, y).is_special:
+        if Tile.is_special(x, y):
             continue
-        where_to_move = Tile.where_is(x,y)
+        where_to_move = Tile.where_is(x, y)
         tmp_x = x
         tmp_y = y
         val = 0
         if where_to_move[0] == -1:
-            while (core.grid[tmp_x][tmp_y].sign == 0 and
+            while (core.grid[tmp_x][tmp_y] == 0 and
                    tmp_x + 1):
                 tmp_x -= 1
                 val += 1
             sm+=val -1
             continue
         if where_to_move[1] == -1:
-            while (core.grid[tmp_x][tmp_y].sign == 0 and
+            while (core.grid[tmp_x][tmp_y] == 0 and
                    tmp_y + 1):
                 tmp_y -= 1
                 val += 1
@@ -99,22 +101,22 @@ def get_req_moves(core, tup):
             continue
 
         if where_to_move[0] == 1:
-            while (core.grid[tmp_x][tmp_y].sign == 0 and
-                   tmp_x + 1< core.size):
+            while (core.grid[tmp_x][tmp_y] == 0 and
+                   tmp_x + 1 < core.size):
                 tmp_x += 1
                 val += 1
-            if tmp_x + 1 and core.grid[tmp_x][tmp_y].sign != 0 < core.size:
+            if tmp_x + 1 < core.size and core.grid[tmp_x][tmp_y] != 0:
                 sm+= val -1                    
             else:
                 sm+=val
             continue
 
         if where_to_move[1] == 1:
-            while (core.grid[tmp_x][tmp_y].sign == 0 and
+            while (core.grid[tmp_x][tmp_y] == 0 and
                    tmp_y + 1 < core.size):
                 tmp_y += 1
                 val += 1
-            if tmp_y + 1 and core.grid[tmp_x][tmp_y].sign != 0 < core.size:
+            if tmp_y + 1 < core.size and core.grid[tmp_x][tmp_y] != 0:
                 sm+=val-1
             else:
                 sm+=val
