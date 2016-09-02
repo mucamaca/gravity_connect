@@ -30,22 +30,31 @@ class GUI:
             self.map.delete('all')
             # Draws the grid
             for i in range(TABLESIZE):
-                self.map.create_line(0, i * self.cellsize, TABLESIZE * self.cellsize, i * self.cellsize)
-                self.map.create_line(i * self.cellsize, 0, i * self.cellsize, TABLESIZE * self.cellsize)
+                self.map.create_line(
+                    0, i * self.cellsize, TABLESIZE * self.cellsize,
+                    i * self.cellsize
+                )
+                self.map.create_line(
+                    i * self.cellsize, 0, i * self.cellsize,
+                    TABLESIZE * self.cellsize
+                )
 
             # Draws the tokens and special fields:
             for i in range(TABLESIZE):
                 for j in range(TABLESIZE):
-                    if self.core.grid[i][j] == 0:
-                        colour = "white"
                     if Core.is_special(i, j):
                         colour = "gray"
                     if self.core.grid[i][j] == 1:
                         colour = COLOUR_1
                     if self.core.grid[i][j] == 2:
                         colour = COLOUR_2
-                    self.map.create_rectangle(i * self.cellsize, j * self.cellsize,
-                                            (i + 1) * self.cellsize, (j + 1) * self.cellsize, fill=colour)
+                    else:
+                        colour = "white"
+                    self.map.create_rectangle(
+                        i * self.cellsize, j * self.cellsize,
+                        (i + 1) * self.cellsize,
+                        (j + 1) * self.cellsize, fill=colour
+                    )
 
     def mouse_click(self, event):
         self.mouse_x = int(event.x // self.cellsize) 
