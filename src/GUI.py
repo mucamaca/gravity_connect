@@ -66,7 +66,7 @@ class GUI:
             self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250,
                             self.place_token, self.mouse_x, self.mouse_y)
 
-        self.turn = not self.turn
+        
         # coords = minimax(self.core, self.turn, MAXDEPTH)
         # self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
         # self.root.after(self.increment_id(coords[0], coords[1]) * 250,
@@ -74,7 +74,7 @@ class GUI:
         # self.turn = not self.turn
     def drop_token(self, x, y, pos):
         move_dir = Core.where_is(x, y)
-        if (x != pos[0]) or (y != pos[1]):
+        if (x, y) != pos:
             if self.turn:
                 colour = COLOUR_1
             else:
@@ -102,7 +102,8 @@ class GUI:
 
     def place_token(self, x, y):
         pos = self.core.get_token_pos(x, y)
-        self.core.insert_token(*pos, not self.turn + 1)
+        sign = (not self.turn) + 1
+        self.core.insert_token(pos[0], pos[1], sign)
         if (x, y) == pos:
             self.core.valid_list.remove(pos)
         if self.core.end(*pos):
