@@ -44,12 +44,12 @@ class GUI:
                 for j in range(TABLESIZE):
                     if Core.is_special(i, j):
                         colour = "gray"
+                    else:
+                        colour = "white"
                     if self.core.grid[i][j] == 1:
                         colour = COLOUR_1
                     if self.core.grid[i][j] == 2:
                         colour = COLOUR_2
-                    else:
-                        colour = "white"
                     self.map.create_rectangle(
                         i * self.cellsize, j * self.cellsize,
                         (i + 1) * self.cellsize,
@@ -81,8 +81,10 @@ class GUI:
                 colour = COLOUR_2
             
             self.load_map()
-            self.map.create_rectangle(x * self.cellsize, y * self.cellsize,
-                                      (x+1) * self.cellsize, (y+1) * self.cellsize, fill=colour)
+            self.map.create_rectangle(
+                x * self.cellsize, y * self.cellsize,
+                (x+1) * self.cellsize, (y+1) * self.cellsize, fill=colour
+            )
             
             x += move_dir[0]
             y += move_dir[1]
@@ -112,13 +114,24 @@ class GUI:
         self.end_screen = tk.Tk()
         self.end_screen.protocol("WM_DELETE_WINDOW", self.quit_game)
         if sign:
-            end_text = tk.Label(self.end_screen, text='Player wins!', font=('Helvetica', 16))
+            end_text = tk.Label(
+                self.end_screen,
+                text='Player wins!',
+                font=('Helvetica', 16)
+            )
         else:
-            end_text = tk.Label(self.end_screen, text='The computer wins!', font=('Helvetica', 16))
+            end_text = tk.Label(
+                self.end_screen,
+                text='The computer wins!',
+                font=('Helvetica', 16)
+            )
 
-        text = tk.Label(self.end_screen, text='Do you want to play again?')
-        restart = tk.Button(self.end_screen, text='Yes!', command=self.restart_game)
-        g_exit = tk.Button(self.end_screen, text='No!', command=self.quit_game)
+        text = tk.Label(self.end_screen,
+                        text='Do you want to play again?')
+        restart = tk.Button(self.end_screen, text='Yes!',
+                            command=self.restart_game)
+        g_exit = tk.Button(self.end_screen, text='No!',
+                           command=self.quit_game)
 
         end_text.pack()
         text.pack(side=tk.LEFT)
