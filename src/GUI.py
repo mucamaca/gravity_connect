@@ -2,6 +2,8 @@ import tkinter as tk
 from core import Core
 from constants import *
 from ai import minimax
+from score import score
+
 
 class GUI:
     def __init__(self, core):
@@ -42,14 +44,9 @@ class GUI:
             # Draws the tokens and special fields:
             for i in range(TABLESIZE):
                 for j in range(TABLESIZE):
-                    if Core.is_special(i, j):
-                        colour = "gray"
-                    else:
-                        colour = "white"
-                    if self.core.grid[i][j] == 1:
-                        colour = COLOUR_1
-                    if self.core.grid[i][j] == 2:
-                        colour = COLOUR_2
+                    colour = [BG_COLOUR, COLOUR_1, COLOUR_2][self.core.grid[i][j]]
+                    if colour == BG_COLOUR and Core.is_special(i, j):
+                        colour = SPECIAL_COLOUR
                     self.map.create_rectangle(
                         i * self.cellsize, j * self.cellsize,
                         (i + 1) * self.cellsize,
@@ -65,13 +62,14 @@ class GUI:
                             self.core.get_token_pos(self.mouse_x, self.mouse_y))
             self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250,
                             self.place_token, self.mouse_x, self.mouse_y)
+            print(score(self.core,  self.turn + 1))
+            self.load_map()
+            coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
+            self.drop_token(coords[1], coords[2],
+                            self.core.get_token_pos(coords[1], coords[2]))
+            self.root.after(self.increment_id(coords[1], coords[2]) * 250,
+                            self.place_token, coords[1], coords[2])
 
-        
-        # coords = minimax(self.core, self.turn, MAXDEPTH)
-        # self.drop_token(coords[0], coords[1], self.core.get_token_pos(coords[0], coords[1]))
-        # self.root.after(self.increment_id(coords[0], coords[1]) * 250,
-        #                 self.place_token, coords[0], coords[1])
-        # self.turn = not self.turn
     def drop_token(self, x, y, pos):
         move_dir = Core.where_is(x, y)
         if (x, y) != pos:
