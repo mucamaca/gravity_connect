@@ -9,5 +9,7 @@ FRAMESIZE = TABLESIZE * CELLSIZE
 
 COLOUR_1 = "blue"
 COLOUR_2 = "deeppink"
+BG_COLOUR = "white"
+SPECIAL_COLOUR = "grey"
 
-MAXDEPTH = 3
+MAXDEPTH = 2
