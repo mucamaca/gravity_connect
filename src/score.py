@@ -1,20 +1,22 @@
 from core import Core
 from constants import *
 
+
 score_list_enemy = [7, 16, 400, 1800, 100000]
 score_list_me =    [7, 36, 800, 15000,  1000000]
-init = 1
+
 
 def score(core, sign):
     scor = 0
     for i,j in core.valid_list:
         if core.grid[i][j] == 0:
-            pos=core.get_token_pos(i,j)
-            for k in list_of_tuples(core, *pos):
-                scor += tup_score(core, k, sign)
+            pos = core.get_token_pos(i, j)
+        else:
+            pos = (i, j)
+        for k in list_of_tuples(core, *pos):
+            scor += tup_score(core, k, sign)
     return scor
-            
-        
+
 
 def count(core, tup, sign):
     _count = 0
@@ -23,7 +25,6 @@ def count(core, tup, sign):
             _count += 1
     return _count
            
-
 
 def tup_score(core, tup, sign):
     if sign == 2:
@@ -35,14 +36,13 @@ def tup_score(core, tup, sign):
     if me and enemy:
         return 0
     elif enemy:
-        return score_list_enemy[enemy] // (2**get_req_moves(core, tup))
+        return score_list_enemy[enemy] // (2 ** get_req_moves(core, tup))
     elif me:
-        return score_list_me[me] // (2** get_req_moves(core, tup))
+        return score_list_me[me] // (2 ** get_req_moves(core, tup))
     else:
         return 7
-                                
-        
-    
+
+
 def list_of_tuples(core, x, y):
     ret_val = []
     for i in range(x - 3, x + 1):
@@ -79,9 +79,9 @@ def get_tuples(i, j, k ,l):
 def get_req_moves(core, tup):
     sm = val = 0
     for x,y in tup:
-        if Tile.is_special(x, y):
+        if Core.is_special(x, y):
             continue
-        where_to_move = Tile.where_is(x, y)
+        where_to_move = Core.where_is(x, y)
         tmp_x = x
         tmp_y = y
         val = 0
