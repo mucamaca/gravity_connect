@@ -125,7 +125,7 @@ class Core:
         for i in range(1, 4):
             if y - i < 0:
                 break
-            if self.grid[x][y - i].sign == c_sign:
+            if self.grid[x][y - i] == c_sign:
                 found +=1
             else:
                 break
