@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import tkinter as tk
 from core import Core
 from constants import *
@@ -6,17 +8,14 @@ from score import score
 
 
 class GUI:
-    def __init__(self, core):
-        self.core = core
+    def __init__(self):
+        self.core = Core()
         self.height, self.width = FRAMESIZE, FRAMESIZE
         self.cellsize = CELLSIZE
         self.root = tk.Tk()
         self.root.title("Gravity Connect")
         self.turn = True
-        self.switch_id = 0
-        self.mouse_x = 0
-        self.mouse_y = 0
-        
+
         self.make_canvas()
 
         self.root.mainloop()
@@ -54,14 +53,14 @@ class GUI:
                     )
 
     def mouse_click(self, event):
-        self.mouse_x = int(event.x // self.cellsize) 
-        self.mouse_y = int(event.y // self.cellsize)
+        mouse_x = int(event.x // self.cellsize) 
+        mouse_y = int(event.y // self.cellsize)
         
-        if self.core.valid_coords(self.mouse_x, self.mouse_y):
-            self.drop_token(self.mouse_x, self.mouse_y,
-                            self.core.get_token_pos(self.mouse_x, self.mouse_y))
-            self.root.after(self.increment_id(self.mouse_x, self.mouse_y) * 250,
-                            self.place_token, self.mouse_x, self.mouse_y)
+        if self.core.valid_coords(mouse_x, mouse_y):
+            self.drop_token(mouse_x, mouse_y,
+                            self.core.get_token_pos(mouse_x, mouse_y))
+            self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
+                            self.place_token, mouse_x, mouse_y)
             print(score(self.core,  self.turn + 1))
             self.load_map()
             coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
@@ -92,11 +91,10 @@ class GUI:
     def increment_id(self, x, y):
         pos = self.core.get_token_pos(x, y)
         if x == pos[0]:
-            diff = abs(y - pos[1])
+            return abs(y - pos[1])
         else:
-            diff = abs(x - pos[0])
-        self.switch_id = diff
-        return self.switch_id
+            return abs(x - pos[0])
+        
 
     def place_token(self, x, y):
         pos = self.core.get_token_pos(x, y)
@@ -142,7 +140,7 @@ class GUI:
         self.end_screen.destroy()
         self.root.destroy()
         del self.core
-        main()
+        self.__init__()
 
     def quit_game(self):
         # it destroys both screens
@@ -150,8 +148,10 @@ class GUI:
         self.root.destroy()
 
 def main():
-    core = Core()
-    gui = GUI(core)
+    gui = GUI()
 
 def do_nothing():
-    pass
+    pass 
+
+if __name__ == "__main__":
+    main()
