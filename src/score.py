@@ -2,45 +2,55 @@ from core import Core
 from constants import *
 
 
-score_list_enemy = [7, 16, 400, 1800, 100000]
-score_list_me =    [7, 36, 800, 15000,  1000000]
+score_list = [7, 16, 400, 1800, 100000]
 
 
-def score(core, sign):
+def score(core):
     scor = 0
     for i,j in core.valid_list:
-        if core.grid[i][j] == 0:
-            pos = core.get_token_pos(i, j)
-        else:
-            pos = (i, j)
-        for k in list_of_tuples(core, *pos):
-            scor += tup_score(core, k, sign)
+        chg = core.where_is(i, j)
+        pos = list(core.get_token_pos(i, j))
+        if (pos[0] != 0 and pos[1] != 0 and
+            pos[0] != TABLESIZE - 1 and pos[1] != TABLESIZE - 1):
+            pos[0] += chg[0]
+            pos[1] += chg[1]
+        for t in list_of_tuples(core, *pos):
+            scor += tup_score(core, t)
+        if chg != (0, 0):
+            while (pos[0] != 0 and pos[1] != 0 and
+                   pos[0] != TABLESIZE - 1 and pos[1] != TABLESIZE - 1):
+                pos[0] += chg[0]
+                pos[1] += chg[1]
+                for t in list_of_tuples(core, *pos):
+                    scor += tup_score(core, t)
     return scor
 
 
 def count(core, tup, sign):
     _count = 0
     for i, j in tup:
-        if core.grid[i][j] == sign:
-            _count += 1
+        try:
+            if core.grid[i][j] == sign:
+                _count += 1
+        except IndexError:
+            print(tup)
+            raise
     return _count
            
 
-def tup_score(core, tup, sign):
-    if sign == 2:
-        me = count(core, tup, 2)
-        enemy = count(core, tup, 1)
-    else:
-        enemy = count(core, tup, 2)
-        me = count(core, tup, 1)
-    if me and enemy:
+def tup_score(core, tup):
+    if count(core, tup, CENTER_SIGN):
         return 0
-    elif enemy:
-        return score_list_enemy[enemy] // (2 ** get_req_moves(core, tup))
-    elif me:
-        return score_list_me[me] // (2 ** get_req_moves(core, tup))
+    computer = count(core, tup, COMPUTER_SIGN)
+    player = count(core, tup, PLAYER_SIGN)
+    if computer and player:
+        return 0
+    elif player:
+        return score_list[player]# // (get_req_moves(core, tup) ** 2 + 1)
+    elif computer:
+        return -(score_list[computer])# // (get_req_moves(core, tup) ** 2 + 1))
     else:
-        return 7
+        return 0
 
 
 def list_of_tuples(core, x, y):
