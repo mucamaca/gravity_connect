@@ -20,6 +20,10 @@ class Core:
                 self.valid_list.append((i, j-1))
 
         self.grid = [[0] * self.size for i in range(self.size)]
+        self.grid[self.size // 2 - 1][self.size // 2 - 1] = CENTER_SIGN
+        self.grid[self.size // 2 - 1][self.size // 2] = CENTER_SIGN
+        self.grid[self.size // 2][self.size // 2 - 1] = CENTER_SIGN
+        self.grid[self.size // 2][self.size // 2] = CENTER_SIGN
         
     @staticmethod    
     def is_special(x, y):
@@ -37,6 +41,8 @@ class Core:
             return -1, 0
         elif x < y and x + y > TABLESIZE - 1:
             return 0, 1
+        else:
+            return 0, 0
 
     def get_token_pos(self, x, y):
         if self.is_special(x, y):
@@ -48,31 +54,31 @@ class Core:
             while (self.grid[tmp_x][tmp_y] == 0 and
                    tmp_x + 1):
                 tmp_x -= 1
-            return (tmp_x + 1, tmp_y)
+            return [tmp_x + 1, tmp_y]
 
         if where_to_move[1] == -1:
             while (self.grid[tmp_x][tmp_y] == 0 and
                    tmp_y + 1):
                 tmp_y -= 1
-            return (tmp_x, tmp_y + 1)
+            return [tmp_x, tmp_y + 1]
 
         if where_to_move[0] == 1:
             while (self.grid[tmp_x][tmp_y] == 0 and
                    tmp_x + 1< self.size):
                 tmp_x += 1
-            if tmp_x + 1 and self.grid[tmp_x][tmp_y] != 0 < self.size:
-                return (tmp_x - 1, tmp_y)
+            if self.grid[tmp_x][tmp_y] != 0:
+                return [tmp_x - 1, tmp_y]
             else:
-                return (tmp_x, tmp_y)
+                return [tmp_x, tmp_y]
 
         if where_to_move[1] == 1:
             while (self.grid[tmp_x][tmp_y] == 0 and
                    tmp_y + 1 < self.size):
                 tmp_y += 1
-            if tmp_y + 1 and self.grid[tmp_x][tmp_y] != 0 < self.size:
-                return (tmp_x, tmp_y - 1)
+            if self.grid[tmp_x][tmp_y] != 0:
+                return [tmp_x, tmp_y - 1]
             else:
-                return (tmp_x, tmp_y)
+                return [tmp_x, tmp_y]
             
     def get_click_pos(self, x, y):
             dir = self.where_is(x, y)
@@ -85,8 +91,8 @@ class Core:
             return True
         return False
 
-    def insert_token(self, x, y, sign):
-        self.grid[x][y] = sign
+    def insert_token(self, x, y, turn):
+        self.grid[x][y] = [PLAYER_SIGN, COMPUTER_SIGN][int(turn)]
 
     def remove_token(self, x, y):
         self.grid[pos[0]][pos[1]] = 0            
