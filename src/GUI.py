@@ -43,7 +43,7 @@ class GUI:
             # Draws the tokens and special fields:
             for i in range(TABLESIZE):
                 for j in range(TABLESIZE):
-                    colour = [BG_COLOUR, COLOUR_1, COLOUR_2][self.core.grid[i][j]]
+                    colour = [BG_COLOUR, COLOUR_1, COLOUR_2, SPECIAL_COLOUR][self.core.grid[i][j]]
                     if colour == BG_COLOUR and Core.is_special(i, j):
                         colour = SPECIAL_COLOUR
                     self.map.create_rectangle(
@@ -53,6 +53,7 @@ class GUI:
                     )
 
     def mouse_click(self, event):
+        self.load_map()
         mouse_x = int(event.x // self.cellsize) 
         mouse_y = int(event.y // self.cellsize)
         
@@ -61,14 +62,15 @@ class GUI:
                             self.core.get_token_pos(mouse_x, mouse_y))
             self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
                             self.place_token, mouse_x, mouse_y)
-            print(score(self.core,  self.turn + 1))
-            self.load_map()
-            coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
-            self.drop_token(coords[1], coords[2],
-                            self.core.get_token_pos(coords[1], coords[2]))
-            self.root.after(self.increment_id(coords[1], coords[2]) * 250,
-                            self.place_token, coords[1], coords[2])
-
+            
+            # coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
+            # self.drop_token(coords[1], coords[2],
+            #                 self.core.get_token_pos(coords[1], coords[2]))
+            # self.root.after(self.increment_id(coords[1], coords[2]) * 250,
+            #                 self.place_token, coords[1], coords[2])
+            for k in self.core.grid:
+                print(k)
+        
     def drop_token(self, x, y, pos):
         move_dir = Core.where_is(x, y)
         if (x, y) != pos:
@@ -95,28 +97,28 @@ class GUI:
         else:
             return abs(x - pos[0])
         
-
+        
     def place_token(self, x, y):
         pos = self.core.get_token_pos(x, y)
-        sign = (not self.turn) + 1
-        self.core.insert_token(pos[0], pos[1], sign)
+        self.core.insert_token(pos[0], pos[1], self.turn)
+        self.load_map()
         if (x, y) == pos:
             self.core.valid_list.remove(pos)
         if self.core.end(*pos):
-            self.game_end(sign)
+            self.game_end()
         self.turn = not self.turn
-        self.load_map()
+        print(score(self.core))
 
-    def game_end(self, sign):
+    def game_end(self):
         self.end_screen = tk.Tk()
         self.end_screen.protocol("WM_DELETE_WINDOW", self.quit_game)
-        if sign:
+        if self.turn + 1 == PLAYER_SIGN:
             end_text = tk.Label(
                 self.end_screen,
                 text='Player wins!',
                 font=('Helvetica', 16)
             )
-        else:
+        elif self.turn + 1 == COMPUTER_SIGN:
             end_text = tk.Label(
                 self.end_screen,
                 text='The computer wins!',
