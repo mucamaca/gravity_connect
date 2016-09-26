@@ -2,7 +2,7 @@ from core import Core
 from constants import *
 
 
-score_list = [7, 16, 400, 1800, 100000]
+score_list = [0, 16, 400, 1800, 100000]
 
 
 def score(core):
@@ -46,9 +46,9 @@ def tup_score(core, tup):
     if computer and player:
         return 0
     elif player:
-        return score_list[player]# // (get_req_moves(core, tup) ** 2 + 1)
+        return -(score_list[player]) // (get_req_moves(core, tup) ** 2 + 1)
     elif computer:
-        return -(score_list[computer])# // (get_req_moves(core, tup) ** 2 + 1))
+        return score_list[computer] // (get_req_moves(core, tup) ** 2 + 1)
     else:
         return 0
 
