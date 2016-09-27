@@ -4,10 +4,10 @@ import tkinter as tk
 from core import Core
 from constants import *
 from ai import minimax
-from score import score
 
 
 class GUI:
+    c = 1
     def __init__(self):
         self.core = Core()
         self.height, self.width = FRAMESIZE, FRAMESIZE
@@ -58,18 +58,23 @@ class GUI:
         mouse_y = int(event.y // self.cellsize)
         
         if self.core.valid_coords(mouse_x, mouse_y):
-            self.drop_token(mouse_x, mouse_y,
-                            self.core.get_token_pos(mouse_x, mouse_y))
-            self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
-                            self.place_token, mouse_x, mouse_y)
+            self.place_token(mouse_x, mouse_y)
+            #self.drop_token(mouse_x, mouse_y,
+            #                self.core.get_token_pos(mouse_x, mouse_y))
+            #self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
+            #                self.place_token, mouse_x, mouse_y)
             
-            # coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
+            if self.c %2:
+                print("calculating...")
+                coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
+                print(coords[2], coords[1])
+            self.c += 1
             # self.drop_token(coords[1], coords[2],
             #                 self.core.get_token_pos(coords[1], coords[2]))
             # self.root.after(self.increment_id(coords[1], coords[2]) * 250,
             #                 self.place_token, coords[1], coords[2])
-            for k in self.core.grid:
-                print(k)
+            for i in self.core.grid:
+                print(i)
         
     def drop_token(self, x, y, pos):
         move_dir = Core.where_is(x, y)
@@ -107,7 +112,7 @@ class GUI:
         if self.core.end(*pos):
             self.game_end()
         self.turn = not self.turn
-        print(score(self.core))
+        print(self.core.score())
 
     def game_end(self):
         self.end_screen = tk.Tk()
