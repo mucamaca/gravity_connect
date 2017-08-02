@@ -1,6 +1,3 @@
-from constants import NUM_OF_PLAYERS
-   
-
 class Tup:
     def __init__(self, grid, p1, p2):
 	self.range = (p1, p2)
