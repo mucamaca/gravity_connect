@@ -2,8 +2,8 @@
 
 import tkinter as tk
 from core import Core
-from constants import *
-from ai import minimax
+#from constants import *
+#from ai import minimax
 
 
 class GUI:
@@ -25,7 +25,7 @@ class GUI:
         self.map.bind('<Button-1>', self.mouse_click)
         self.map.grid(row = 0, column = 0)
 
-        self.load_map() 
+        self.load_map()
 
     def load_map(self):
             self.map.delete('all')
@@ -54,16 +54,16 @@ class GUI:
 
     def mouse_click(self, event):
         self.load_map()
-        mouse_x = int(event.x // self.cellsize) 
+        mouse_x = int(event.x // self.cellsize)
         mouse_y = int(event.y // self.cellsize)
-        
+
         if self.core.valid_coords(mouse_x, mouse_y):
             self.place_token(mouse_x, mouse_y)
             #self.drop_token(mouse_x, mouse_y,
             #                self.core.get_token_pos(mouse_x, mouse_y))
             #self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
             #                self.place_token, mouse_x, mouse_y)
-            
+
             if self.c %2:
                 print("calculating...")
                 coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
@@ -75,7 +75,7 @@ class GUI:
             #                 self.place_token, coords[1], coords[2])
             for i in self.core.grid:
                 print(i)
-        
+
     def drop_token(self, x, y, pos):
         move_dir = Core.where_is(x, y)
         if (x, y) != pos:
@@ -83,13 +83,13 @@ class GUI:
                 colour = COLOUR_1
             else:
                 colour = COLOUR_2
-            
+
             self.load_map()
             self.map.create_rectangle(
                 x * self.cellsize, y * self.cellsize,
                 (x+1) * self.cellsize, (y+1) * self.cellsize, fill=colour
             )
-            
+
             x += move_dir[0]
             y += move_dir[1]
 
@@ -101,8 +101,8 @@ class GUI:
             return abs(y - pos[1])
         else:
             return abs(x - pos[0])
-        
-        
+
+
     def place_token(self, x, y):
         pos = self.core.get_token_pos(x, y)
         self.core.insert_token(pos[0], pos[1], self.turn)
@@ -158,7 +158,7 @@ def main():
     gui = GUI()
 
 def do_nothing():
-    pass 
+    pass
 
 if __name__ == "__main__":
     main()

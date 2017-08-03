@@ -1,4 +1,4 @@
-from gameconfig import config
+from gameconfig import GameConfig
 from grid import Grid
 
 
@@ -11,6 +11,5 @@ class Core:
         if(self.grid[x][y].state != Tile.EMPTY):
             return False
         update_tile(x, y, self.turn)
-        self.turn = (self.turn+1) % config.num_of_players
+        self.turn = (self.turn+1) % GameConfig.num_of_players
         return True
-
