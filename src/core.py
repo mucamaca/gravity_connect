@@ -1,13 +1,16 @@
-from constants import *
+from gameconfig import config
 from grid import Grid
-from shape_loader import load_shape
 
 
 class Core:
-    size = TABLESIZE
-    score_list = [0, 16, 400, 1800, 100000]
-    def __init__(self, game_options=GameOptions()):
-        self.num_of_players = game_options.num_of_players
-        self.ai_players = game_options.ai_players
-        self.grid = Grid(gametype)
+    def __init__(self):
+        self.grid = Grid()
         self.turn = 0
+
+    def insert_token(self, x, y):
+        if(self.grid[x][y].state != Tile.EMPTY):
+            return False
+        update_tile(x, y, self.turn)
+        self.turn = (self.turn+1) % config.num_of_players
+        return True
+
