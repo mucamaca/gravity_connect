@@ -2,6 +2,7 @@ import tkinter as tk
 from core import Core
 from constants import *
 
+
 class GUI:
     def __init__(self, core):
         self.core = core
@@ -11,8 +12,9 @@ class GUI:
         self.root.title("Gravity Connect")
         self.turn = True
         self.switch_id = 0
+        self.lock_click = False
         self.is_gameover = False
-        
+
         self.make_canvas()
 
         self.root.mainloop()
@@ -22,13 +24,14 @@ class GUI:
         self.map.bind('<Button-1>', self.mouse_click)
         self.map.grid(row = 0, column = 0)
 
-        self.load_map() 
+        self.load_map()
 
     def mouse_click(self, event):
-        mouse_x = int(event.x // self.grid) 
+        mouse_x = int(event.x // self.grid)
         mouse_y = int(event.y // self.grid)
 
-        if self.core.valid_coords(mouse_x, mouse_y) and not self.is_gameover:
+        if self.core.valid_coords(mouse_x, mouse_y) and not self.is_gameover and not self.lock_click:
+            self.lock_click = True
             self.drop_token(mouse_x, mouse_y, self.core.get_token_pos(mouse_x, mouse_y))
             self.root.after(self.increment_id(mouse_x, mouse_y) * 250, self.place_token, mouse_x, mouse_y)
 
@@ -38,6 +41,7 @@ class GUI:
             self.game_end(sign)
         self.turn = not self.turn
         self.load_map()
+        self.lock_click = False
 
     def load_map(self):
         self.map.delete('all')
@@ -67,11 +71,11 @@ class GUI:
                 colour = COLOUR_1
             else:
                 colour = COLOUR_2
-            
+
             self.load_map()
             self.map.create_rectangle(x * self.grid, y * self.grid,
                                       (x+1) * self.grid, (y+1) * self.grid, fill=colour)
-            
+
             x += move_dir[0]
             y += move_dir[1]
 
