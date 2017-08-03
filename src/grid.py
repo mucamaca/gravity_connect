@@ -90,33 +90,3 @@ class Grid:
             y += self[x][y].dir[1]
         return self[x][y]
 
-    def update_tile(self, x, y, new_state):
-        """ Changes the state of the tile at position specified by arguments
-        x and y to state specified by new_state.
-
-        Updates the score of the current grid and the lists 
-        containing tiles with the same state.
-        """
-        curr_state = grid[x][y].state 
-        for i, tile in enumerate(self.states_list[curr_state]):
-            if tile.x == x and tile.y == y:
-                self.states_list[curr_state].pop(i)
-                break
-        self.states_list[player].append(self[x][y])
-        self.score += self[x][y].update(player)
-    
-    def tup_list(self):
-        """ A generator object that yields all the tuples of tiles of length 
-        required to win that can be drawn on the current grid.
-        """
-	for i in range(self.x_size):
-	    for j in range(self.y_size):
-		if i + self.win_len < self.x_size:
-		    yield Tup(self, (i, j), (i + 5, j))
-		if j + 5 < self.y_size:
-		    yield Tup(self, (i, j), (i, j + 5))
-		if i + 5 < self.x_size and j + 5 < self.y_size:
-		    yield Tup(self, (i, j), (i + 5, j + 5))
-
-
-

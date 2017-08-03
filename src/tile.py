@@ -16,12 +16,6 @@ class Tile:
     def __eq__(self, other):
 	return self.state == other.state
 
-    def __len__(self):
-	return len(self.tup_list)
-
-    def __iter__(self):
-	return self.tup_list
-
     def __getitem__(self, index):
 	if index == 0:
 	    return self.x
@@ -29,11 +23,3 @@ class Tile:
 	    return self.y
 	raise IndexError
 
-
-    def add_tup(self, tup):
-	self.tup_list.append(tup)
-
-    def update(self, new_state):
-	old_state = self.state
-	self.state = new_state
-	return sum((tup.update_score(old_state, new_state) for tup in self.tup_list))
