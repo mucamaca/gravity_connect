@@ -1,13 +1,14 @@
-#autosaves
+# autosaves
 *~
 
-#python compiled files
+# python compiled files
 *.pyc
 
-#pycache folder
+# pycache folder
 __pycache__
 
+# vim recovery files
+*.swp
 
-
-
+# emacs recovery files
 *.py#
