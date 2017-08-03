@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 from core import Core
 from GUI import GUI 
 
