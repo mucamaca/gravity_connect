@@ -1,7 +1,7 @@
-"""This module contains definition of type Grid."""
+""" This module contains definition of type Grid. """
 
 
-from constants import *
+from gameconfig import config
 from tile import Tile
 
 
@@ -16,39 +16,24 @@ class Grid:
     having different hash values.
 
     The following methods are defined:
-    Grid.get_list_of_states(state)
     Grid.get_token_pos(x, y)
     Grid.update_tile(x, y, new_state)
-    Grid.tup_list()
     """
 
-    def __init__(self, game_options):
-        """Grid object constructor.
-        
-        arguments:
-        game_options -- 
-        GameOptions object containing configuration used for the grid
-        """
-
-        shape = game_options.load_shape()
-	self.config = game_options
-
-        # TODO : move this assert to loader of config files
-	assert not (self.x_size % 2 or self.y_size % 2)
+    def __init__(self):
+        """ Grid object constructor. """
         self._grid = []
-	self.states_list = [[] for i in range(self.config.num_of_players)]
-	for x in range(self.x_size):
-	    self._grid.append([])
-	    for y in range(self.y_size):
-		if shape[x][y][0] == -42:
-		    self._grid[x].append(Tile(x, y, Tile.BLOCKED, (-42, 0)))
-		    self.states_list[Tile.BLOCKED].append(self._grid[x][-1])
-		    continue
-		self._grid[x].append(Tile(x, y, Tile.EMPTY, shape[x][y]))
-		self.states_list[Tile.EMPTY].append(self._grid[x][-1])
-	for tup in self.tup_list():
-	    for tile in tup:
-	        tile.add_tup(tup)
+	self._states_list = [[] for i in range(config.num_of_players)]
+        with config.load_shape() as shape:
+            for x in range(config.x_size):
+                self._grid.append([])
+                for y in range(config.y_size):
+                    if shape[x][y] is None:
+                        self._grid[x].append(Tile(x, y, Tile.BLOCKED, None))
+                        self._states_list[Tile.BLOCKED].append(self._grid[x][-1])
+                        continue
+                    self._grid[x].append(Tile(x, y, Tile.EMPTY, shape[x][y]))
+                    self._states_list[Tile.EMPTY].append(self._grid[x][-1])
 
     def __iter__(self):
 	for row in self._grid:
@@ -70,15 +55,6 @@ class Grid:
 	    h += t * z**i
 	return h
     
-    def get_list_of_state(self, state):
-        """ Returns a list of tiles whose state is the same as specified 
-        by argument state.
-
-        This function runs in constant time as list of tiles with the same
-        state are cached and updated at each update of grid state
-        """
-        return  self.states_list[state]
-
     def get_token_pos(self, x, y):
         """ Returns the position where a token placed at coordinates 
         specified by arguments x and y would end its path 
@@ -89,4 +65,7 @@ class Grid:
             x += self[x][y].dir[0]
             y += self[x][y].dir[1]
         return self[x][y]
+
+    def update_tile(self, x, y, new_state):
+        self[x][y].state = new_state
 
