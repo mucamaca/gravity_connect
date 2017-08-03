@@ -7,7 +7,7 @@ class Tup:
 	x, y = p1
 	self.state_count = []
 	self.score = 0
-        self.num_of_players = grid.num_of_players
+        self.num_of_players = grid.config.num_of_players
 	self.state_count = [0] * (self.num_of_players + 2)
 	self.tiles.append(grid[x][y])
 	while (x, y) != p2:
