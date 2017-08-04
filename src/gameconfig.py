@@ -5,6 +5,8 @@ class GameConfig:
     ai_players = [None, None]
     x_size = 10
     y_size = 10
+    
+    win_len = 5
 
     colour_1 = "blue"
     colour_2 = "deeppink"
