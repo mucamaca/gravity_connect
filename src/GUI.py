@@ -79,7 +79,6 @@ class GUI:
 
     def drop_token(self, x, y, pos):
         move_dir = self.grid[x][y].dir
-
         # recursively drops the token
         if (x, y) != pos:
             colour = self.colour_list[self.turn]
@@ -96,6 +95,8 @@ class GUI:
             self.root.after(250, self.drop_token, x, y, pos)
         else:
             self.core.insert_token(*pos)
+            if self.grid.check_win():
+               self.game_end()
 
     # This code is probably not needed anymore
     # def increment_id(self, x, y):
@@ -113,10 +114,6 @@ class GUI:
         self.drop_token(x, y, pos)
         self.load_map()
         self.lock_click = False
-
-        if self.grid.check_win():
-           self.game_end()
-
         self.turn = (self.turn + 1) % config.num_of_players
 
 
