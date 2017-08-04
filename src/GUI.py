@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from core import Core
-#from constants import *
+from gameconfig import GameConfig
 #from ai import minimax
 
 
@@ -10,11 +10,20 @@ class GUI:
     c = 1
     def __init__(self):
         self.core = Core()
-        self.height, self.width = FRAMESIZE, FRAMESIZE
-        self.cellsize = CELLSIZE
+        self.grid = self.core.grid
+        self.height, self.width = GameConfig.framesize, GameConfig.framesize
+        self.tablesize = GameConfig.x_size
+        self.cellsize = GameConfig.tilesize
+
+        self.colour_list = [GameConfig.colour_1, GameConfig.colour_2, GameConfig.colour_3, GameConfig.colour_4, GameConfig.colour_bg, GameConfig.colour_special]
+
+        self.lock_click = False
         self.root = tk.Tk()
         self.root.title("Gravity Connect")
-        self.turn = True
+
+        # indicates which player is on the move (0-n), special number for ai?
+        self.turn = 0
+
 
         self.make_canvas()
 
@@ -30,22 +39,20 @@ class GUI:
     def load_map(self):
             self.map.delete('all')
             # Draws the grid
-            for i in range(TABLESIZE):
+            for i in range(tablesize):
                 self.map.create_line(
-                    0, i * self.cellsize, TABLESIZE * self.cellsize,
+                    0, i * self.cellsize, tablesize * self.cellsize,
                     i * self.cellsize
                 )
                 self.map.create_line(
                     i * self.cellsize, 0, i * self.cellsize,
-                    TABLESIZE * self.cellsize
+                    tablesize * self.cellsize
                 )
 
             # Draws the tokens and special fields:
-            for i in range(TABLESIZE):
-                for j in range(TABLESIZE):
-                    colour = [BG_COLOUR, COLOUR_1, COLOUR_2, SPECIAL_COLOUR][self.core.grid[i][j]]
-                    if colour == BG_COLOUR and Core.is_special(i, j):
-                        colour = SPECIAL_COLOUR
+            for i in range(tablesize):
+                for j in range(tablesize):
+                    colour = self.colour_list[self.core.grid[i][j]]
                     self.map.create_rectangle(
                         i * self.cellsize, j * self.cellsize,
                         (i + 1) * self.cellsize,
@@ -57,32 +64,25 @@ class GUI:
         mouse_x = int(event.x // self.cellsize)
         mouse_y = int(event.y // self.cellsize)
 
-        if self.core.valid_coords(mouse_x, mouse_y):
+        if self.core.can_insert(mouse_x, mouse_y):
             self.place_token(mouse_x, mouse_y)
-            #self.drop_token(mouse_x, mouse_y,
-            #                self.core.get_token_pos(mouse_x, mouse_y))
-            #self.root.after(self.increment_id(mouse_x, mouse_y) * 250,
-            #                self.place_token, mouse_x, mouse_y)
 
-            if self.c %2:
-                print("calculating...")
-                coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
-                print(coords[2], coords[1])
-            self.c += 1
-            # self.drop_token(coords[1], coords[2],
-            #                 self.core.get_token_pos(coords[1], coords[2]))
-            # self.root.after(self.increment_id(coords[1], coords[2]) * 250,
-            #                 self.place_token, coords[1], coords[2])
-            for i in self.core.grid:
-                print(i)
+        # This block is for AI and is not part of v0.2.x
+        #
+        # if self.c %2:
+        #     self.lock_click = True
+        #     print("calculating...")
+        #     coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
+        #     self.place_token(*coords)
+        # self.c += 1
+
 
     def drop_token(self, x, y, pos):
-        move_dir = Core.where_is(x, y)
+        move_dir = self.grid.get_token_dir(x, y)
+
+        # recursively drops the token
         if (x, y) != pos:
-            if self.turn:
-                colour = COLOUR_1
-            else:
-                colour = COLOUR_2
+            colour = colour_list[self.turn]
 
             self.load_map()
             self.map.create_rectangle(
@@ -94,25 +94,31 @@ class GUI:
             y += move_dir[1]
 
             self.root.after(250, self.drop_token, x, y, pos)
-
-    def increment_id(self, x, y):
-        pos = self.core.get_token_pos(x, y)
-        if x == pos[0]:
-            return abs(y - pos[1])
         else:
-            return abs(x - pos[0])
+            self.core.insert_token(*pos)
+
+    # This code is probably not needed anymore
+    # def increment_id(self, x, y):
+    #     pos = self.grid.get_token_pos(x, y)
+    #     if x == pos[0]:
+    #         return abs(y - pos[1])
+    #     else:
+    #         return abs(x - pos[0])
 
 
     def place_token(self, x, y):
-        pos = self.core.get_token_pos(x, y)
-        self.core.insert_token(pos[0], pos[1], self.turn)
+        pos = self.grid.get_token_pos(x, y)
+        self.lock_click = True
+        self.drop_token(x, y, pos)
         self.load_map()
-        if (x, y) == pos:
-            self.core.valid_list.remove(pos)
-        if self.core.end(*pos):
-            self.game_end()
-        self.turn = not self.turn
-        print(self.core.score())
+        self.lock_click = False
+
+        # TODO
+        # if self.core.end(*pos):
+        #    self.game_end()
+
+        self.turn = (self.turn + 1) % GameConfig.num_of_players
+
 
     def game_end(self):
         self.end_screen = tk.Tk()
@@ -154,11 +160,9 @@ class GUI:
         self.end_screen.destroy()
         self.root.destroy()
 
-def main():
-    gui = GUI()
-
-def do_nothing():
-    pass
+# This code is probably not needed anymore
+# def do_nothing():
+#     pass
 
 if __name__ == "__main__":
-    main()
+    gui = GUI()
