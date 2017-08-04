@@ -2,7 +2,7 @@
 
 import tkinter as tk
 from core import Core
-from gameconfig import GameConfig
+from gameconfig import config
 #from ai import minimax
 
 
@@ -113,9 +113,8 @@ class GUI:
         self.load_map()
         self.lock_click = False
 
-        # TODO
-        # if self.core.end(*pos):
-        #    self.game_end()
+        if self.grid.check_win():
+           self.game_end()
 
         self.turn = (self.turn + 1) % GameConfig.num_of_players
 
