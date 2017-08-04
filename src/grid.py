@@ -1,7 +1,7 @@
 """ This module contains definition of type Grid. """
 
 
-from gameconfig import GameConfig
+from gameconfig import config
 from tile import Tile
 
 
@@ -23,17 +23,17 @@ class Grid:
     def __init__(self):
         """ Grid object constructor. """
         self._grid = []
-        self._states_list = [[] for i in range(GameConfig.num_of_players)]
-        with GameConfig.load_shape() as shape:
-            for x in range(GameConfig.x_size):
-                self._grid.append([])
-                for y in range(GameConfig.y_size):
-                    if shape[x][y] is None:
-                        self._grid[x].append(Tile(x, y, Tile.BLOCKED, None))
-                        self._states_list[Tile.BLOCKED].append(self._grid[x][-1])
-                        continue
-                    self._grid[x].append(Tile(x, y, Tile.EMPTY, shape[x][y]))
-                    self._states_list[Tile.EMPTY].append(self._grid[x][-1])
+        self._states_list = [[] for i in range(config.num_of_players)]
+        shape = config.load_shape()
+        for x in range(config.x_size):
+            self._grid.append([])
+            for y in range(config.y_size):
+                if shape[x][y] is None:
+                    self._grid[x].append(Tile(x, y, Tile.BLOCKED, None))
+                    self._states_list[Tile.BLOCKED].append(self._grid[x][-1])
+                    continue
+                self._grid[x].append(Tile(x, y, Tile.EMPTY, shape[x][y]))
+                self._states_list[Tile.EMPTY].append(self._grid[x][-1])
 
     def __iter__(self):
     	for row in self._grid:

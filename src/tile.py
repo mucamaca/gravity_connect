@@ -1,11 +1,11 @@
 """ This module contains the definition of type Tile. """
 
-from gameconfig import GameConfig
+from gameconfig import config
 
 class Tile:
 
     def __init__(self, _x, _y, _state, _dir):
-        self.PLAYERS = list(range(GameConfig.num_of_players))
+        self.PLAYERS = list(range(config.num_of_players))
         self.EMPTY = len(self.PLAYERS)
         self.BLOCKED = self.EMPTY + 1
         self.x = _x
@@ -27,3 +27,10 @@ class Tile:
         if index == 1:
             return self.y
         raise IndexError
+
+    @classmethod
+    def configure(cls):
+        cls.PLAYERS = list(range(config.num_of_players))
+        cls.EMPTY = len(cls.PLAYERS)
+        cls.BLOCKED = cls.EMPTY + 1
+

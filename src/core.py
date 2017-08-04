@@ -1,9 +1,10 @@
-from gameconfig import GameConfig
+from gameconfig import config
 from grid import Grid
-
+from tile import Tile
 
 class Core:
     def __init__(self):
+        Tile.configure()
         self.grid = Grid()
         self.turn = 0
 
@@ -24,5 +25,5 @@ class Core:
             return False
         tile = grid.get_token_pos(x, y)
         grid.update_tile(tile.x, tile.y, self.turn)
-        self.turn = (self.turn+1) % GameConfig.num_of_players
+        self.turn = (self.turn+1) % config.num_of_players
         return True

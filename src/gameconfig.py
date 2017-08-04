@@ -20,13 +20,15 @@ class GameConfig:
     #      5       6        7      8      9
         (0, 1), (1, -1), (1, 0), (1, 1), None]
 
-    def load_shape():
+    def load_shape(self):
         shape = []
         with open("../maps/" + str(self.game_type) +'.mode') as conf:
             for line in conf:
                 shape.append([])
-                for c in line:
-                    shape[-1].append(_dir_list[c])
+                for c in line[:-1]:
+                    shape[-1].append(self._dir_list[int(c)])
         self.x_size = len(shape[0])
         self.y_size = len(shape)
         return shape
+
+config = GameConfig()
