@@ -18,12 +18,12 @@ class Core:
 
 
     def insert_token(self, x, y):
-        """ Checks where a token would fall when put in grid[x][y] 
+        """ Checks where a token would fall when put in grid[x][y]
         and inserts it there. Returns True on success, False otherwise
         """
-        if not can_insert(x, y):
+        if not self.can_insert(x, y):
             return False
-        tile = grid.get_token_pos(x, y)
-        grid.update_tile(tile.x, tile.y, self.turn)
+        tile = self.grid.get_token_pos(x, y)
+        self.grid.update_tile(tile.x, tile.y, self.turn)
         self.turn = (self.turn+1) % config.num_of_players
         return True

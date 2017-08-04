@@ -108,6 +108,7 @@ class GUI:
 
     def place_token(self, x, y):
         pos = self.grid.get_token_pos(x, y)
+        pos = (pos[0], pos[1])
         self.lock_click = True
         self.drop_token(x, y, pos)
         self.load_map()

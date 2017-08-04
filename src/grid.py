@@ -72,8 +72,8 @@ class Grid:
     def check_win(self):
         """ method that checks if any of the players won """
         end = 0
-        for i in range(self.x_size):
-            for j in range(self.y_size):
+        for i in range(config.x_size):
+            for j in range(config.y_size):
                 if i + config.win_len < self.x_size:
                     end = self._count((i, j), (i + config.win, j))
                     if end:
