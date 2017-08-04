@@ -6,6 +6,13 @@ class GameConfig:
     x_size = 10
     y_size = 10
 
+    colour_1 = "blue"
+    colour_2 = "deeppink"
+    colour_3 = "green"
+    colour_4 = "orange"
+    colour_bg = "gray"
+    colour_special = "white"
+
     game_type = 0
 
     #                0         1       2        3        4
