@@ -11,11 +11,11 @@ class GUI:
     def __init__(self):
         self.core = Core()
         self.grid = self.core.grid
-        self.height, self.width = GameConfig.framesize, GameConfig.framesize
-        self.tablesize = GameConfig.x_size
-        self.cellsize = GameConfig.tilesize
+        self.height, self.width = 400, 400
+        self.tablesize = 10
+        self.cellsize = 40
 
-        self.colour_list = [GameConfig.colour_1, GameConfig.colour_2, GameConfig.colour_3, GameConfig.colour_4, GameConfig.colour_bg, GameConfig.colour_special]
+        self.colour_list = [config.colour_1, config.colour_2, config.colour_3, config.colour_4, config.colour_bg, config.colour_special]
 
         self.lock_click = False
         self.root = tk.Tk()
@@ -39,20 +39,20 @@ class GUI:
     def load_map(self):
             self.map.delete('all')
             # Draws the grid
-            for i in range(tablesize):
+            for i in range(self.tablesize):
                 self.map.create_line(
-                    0, i * self.cellsize, tablesize * self.cellsize,
+                    0, i * self.cellsize, self.tablesize * self.cellsize,
                     i * self.cellsize
                 )
                 self.map.create_line(
                     i * self.cellsize, 0, i * self.cellsize,
-                    tablesize * self.cellsize
+                    self.tablesize * self.cellsize
                 )
 
             # Draws the tokens and special fields:
-            for i in range(tablesize):
-                for j in range(tablesize):
-                    colour = self.colour_list[self.core.grid[i][j]]
+            for i in range(self.tablesize):
+                for j in range(self.tablesize):
+                    colour = self.colour_list[self.core.grid[i][j].state]
                     self.map.create_rectangle(
                         i * self.cellsize, j * self.cellsize,
                         (i + 1) * self.cellsize,
@@ -78,7 +78,7 @@ class GUI:
 
 
     def drop_token(self, x, y, pos):
-        move_dir = self.grid.get_token_dir(x, y)
+        move_dir = self.grid[x][y].dir
 
         # recursively drops the token
         if (x, y) != pos:
@@ -116,7 +116,7 @@ class GUI:
         if self.grid.check_win():
            self.game_end()
 
-        self.turn = (self.turn + 1) % GameConfig.num_of_players
+        self.turn = (self.turn + 1) % config.num_of_players
 
 
     def game_end(self):
@@ -159,9 +159,6 @@ class GUI:
         self.end_screen.destroy()
         self.root.destroy()
 
-# This code is probably not needed anymore
-# def do_nothing():
-#     pass
 
 if __name__ == "__main__":
     gui = GUI()

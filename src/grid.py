@@ -60,7 +60,7 @@ class Grid:
         specified by arguments x and y would end its path
         through the grid.
         """
-        while(self[x + self[x][y].dir[0]][y + self[x][y].dir[1].state]
+        while(self[x + self[x][y].dir[0]][y + self[x][y].dir[1]].state
                 != Tile.EMPTY):
             x += self[x][y].dir[0]
             y += self[x][y].dir[1]
@@ -72,17 +72,17 @@ class Grid:
     def check_win(self):
         """ method that checks if any of the players won """
         end = 0
-	for i in range(self.x_size):
-	    for j in range(self.y_size):
-		if i + config.win_len < self.x_size:
-		    end = self._count((i, j), (i + config.win, j))
+        for i in range(self.x_size):
+            for j in range(self.y_size):
+                if i + config.win_len < self.x_size:
+                    end = self._count((i, j), (i + config.win, j))
                     if end:
                         return end
-		if j + config.win < self.y_size:
-		    end = self._count((i, j), (i, j + config.win))
+                if j + config.win < self.y_size:
+                    end = self._count((i, j), (i, j + config.win))
                     if end:
                         return end
-		if i + config.win < self.x_size and j + config.win < self.y_size:
+                if i + config.win < self.x_size and j + config.win < self.y_size:
                     end = self._count((i, j), (i + config.win, j + config.win))
                     if end:
                         return end
@@ -101,7 +101,3 @@ class Grid:
             if j == config.win_len:
                 return i
         return 0
-
-
-
-
