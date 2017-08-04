@@ -123,18 +123,11 @@ class GUI:
     def game_end(self):
         self.end_screen = tk.Tk()
         self.end_screen.protocol("WM_DELETE_WINDOW", self.quit_game)
-        if self.turn + 1 == PLAYER_SIGN:
-            end_text = tk.Label(
-                self.end_screen,
-                text='Player wins!',
-                font=('Helvetica', 16)
-            )
-        elif self.turn + 1 == COMPUTER_SIGN:
-            end_text = tk.Label(
-                self.end_screen,
-                text='The computer wins!',
-                font=('Helvetica', 16)
-            )
+        end_text = tk.Label(
+            self.end_screen,
+            text='Player {} wins!'.format(self.turn),
+            font=('Helvetica', 16)
+        )
 
         text = tk.Label(self.end_screen,
                         text='Do you want to play again?')
