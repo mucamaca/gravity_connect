@@ -22,7 +22,7 @@ class GameConfig:
 
     def load_shape():
         shape = []
-        with open("../maps/" + str(game_type) +'.mode') as conf:
+        with open("../maps/" + str(self.game_type) +'.mode') as conf:
             for line in conf:
                 shape.append([])
                 for c in line:
