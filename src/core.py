@@ -21,7 +21,7 @@ class Core:
         """ Checks where a token would fall when put in grid[x][y] 
         and inserts it there. Returns True on success, False otherwise
         """
-        if(self.grid[x][y].state != Tile.EMPTY):
+        if not can_insert(x, y):
             return False
         tile = grid.get_token_pos(x, y)
         grid.update_tile(tile.x, tile.y, self.turn)
