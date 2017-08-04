@@ -27,6 +27,6 @@ class GameConfig:
                 shape.append([])
                 for c in line:
                     shape[-1].append(_dir_list[c])
-        x_size = len(shape[0])
-        y_size = len(shape)
+        self.x_size = len(shape[0])
+        self.y_size = len(shape)
         return shape
