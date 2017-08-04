@@ -82,7 +82,7 @@ class GUI:
 
         # recursively drops the token
         if (x, y) != pos:
-            colour = colour_list[self.turn]
+            colour = self.colour_list[self.turn]
 
             self.load_map()
             self.map.create_rectangle(

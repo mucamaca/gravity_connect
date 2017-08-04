@@ -74,25 +74,34 @@ class Grid:
         end = 0
         for i in range(config.x_size):
             for j in range(config.y_size):
-                if i + config.win_len < self.x_size:
-                    end = self._count((i, j), (i + config.win, j))
+                if i + config.win_len < config.x_size:
+                    end = self._count((i, j), (i + config.win_len, j))
                     if end:
                         return end
-                if j + config.win < self.y_size:
-                    end = self._count((i, j), (i, j + config.win))
+                if j + config.win_len < config.y_size:
+                    end = self._count((i, j), (i, j + config.win_len))
                     if end:
                         return end
-                if i + config.win < self.x_size and j + config.win < self.y_size:
-                    end = self._count((i, j), (i + config.win, j + config.win))
+                if i + config.win_len < config.x_size and j + config.win_len < config.y_size:
+                    end = self._count((i, j), (i + config.win_len, j + config.win_len))
                     if end:
                         return end
 
     def _count(self, p1, p2):
         """ Method that counts occurences of different states in a tuple """
-        dx = (p2[0] - p1[0])/abs(p2[0] - p1[0])
-        dy = (p2[1] - p1[1])/abs(p2[1] - p1[1])
+
+        # -1 if p2[0]<p1[0]
+        #  0 if p2[0]==p1[0]
+        #  1 if p2[0]>p1[0]
+        dx = (p2[0] - p1[0])//config.win_len
+
+        # -1 if p2[1]<p1[1]
+        #  0 if p2[1]==p1[1]
+        #  1 if p2[1]>p1[1]
+        dy = (p2[1] - p1[1])//config.win_len
+
         x, y = p1
-        state_count = [0]*config.num_of_players
+        state_count = [0]*(config.num_of_players + 2)
         while (x, y) != p2:
             x+=dx
             y+=dy
