@@ -107,6 +107,6 @@ class Grid:
             y+=dy
             state_count[self[x][y].state] += 1
         for i,j in enumerate(state_count):
-            if j == config.win_len:
+            if j == config.win_len and i in Tile.PLAYERS:
                 return i
         return 0
