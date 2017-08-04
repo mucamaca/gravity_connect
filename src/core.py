@@ -22,6 +22,7 @@ class Core:
         """
         if(self.grid[x][y].state != Tile.EMPTY):
             return False
-        update_tile(x, y, self.turn)
+        tile = grid.get_token_pos(x, y)
+        grid.update_tile(tile.x, tile.y, self.turn)
         self.turn = (self.turn+1) % GameConfig.num_of_players
         return True
