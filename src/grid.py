@@ -23,7 +23,7 @@ class Grid:
     def __init__(self):
         """ Grid object constructor. """
         self._grid = []
-        self._states_list = [[] for i in range(config.num_of_players)]
+        self._states_list = [[] for i in range(config.num_of_players + 2)]
         shape = config.load_shape()
         for x in range(config.x_size):
             self._grid.append([])
@@ -68,3 +68,40 @@ class Grid:
 
     def update_tile(self, x, y, new_state):
         self[x][y].state = new_state
+
+    def check_win(self):
+        """ method that checks if any of the players won """
+        end = 0
+	for i in range(self.x_size):
+	    for j in range(self.y_size):
+		if i + config.win_len < self.x_size:
+		    end = self._count((i, j), (i + config.win, j))
+                    if end:
+                        return end
+		if j + config.win < self.y_size:
+		    end = self._count((i, j), (i, j + config.win))
+                    if end:
+                        return end
+		if i + config.win < self.x_size and j + config.win < self.y_size:
+                    end = self._count((i, j), (i + config.win, j + config.win))
+                    if end:
+                        return end
+
+    def _count(self, p1, p2):
+        """ Method that counts occurences of different states in a tuple """
+        dx = (p2[0] - p1[0])/abs(p2[0] - p1[0])
+        dy = (p2[1] - p1[1])/abs(p2[1] - p1[1])
+        x, y = p1
+        state_count = [0]*config.num_of_players
+        while (x, y) != p2:
+            x+=dx
+            y+=dy
+            state_count[self[x][y].state] += 1
+        for i,j in enumerate(state_count):
+            if j == config.win_len:
+                return i
+        return 0
+
+
+
+
