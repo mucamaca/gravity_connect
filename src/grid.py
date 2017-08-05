@@ -87,22 +87,25 @@ class Grid:
         self[x][y].state = new_state
 
     def check_win(self):
-        """ method that checks if any of the players won """
+        """ Method that checks if any of the players won returns -1 if there
+        are no winning tuples. Otherwise returns the winning player's ID.
+        """
         end = 0
         for i in range(config.x_size):
             for j in range(config.y_size):
                 if i + config.win_len < config.x_size:
                     end = self._count((i, j), (i + config.win_len, j))
-                    if end:
+                    if end != -1:
                         return end
                 if j + config.win_len < config.y_size:
                     end = self._count((i, j), (i, j + config.win_len))
-                    if end:
+                    if end != -1:
                         return end
                 if i + config.win_len < config.x_size and j + config.win_len < config.y_size:
                     end = self._count((i, j), (i + config.win_len, j + config.win_len))
-                    if end:
+                    if end != -1:
                         return end
+        return -1
 
     def _count(self, p1, p2):
         """ Method that counts occurences of different states in a tuple """
@@ -126,4 +129,13 @@ class Grid:
         for i,j in enumerate(state_count):
             if j == config.win_len and i in Tile.PLAYERS:
                 return i
-        return 0
+        return -1
+
+    def is_full(self):
+        """ Returns True if there are no more empty tiles left, 
+        False otherwise
+        """
+        return not [tile.state for tile in self].count(Tile.EMPTY)
+    
+
+
