@@ -6,7 +6,7 @@ class GameConfig:
     x_size = 10
     y_size = 10
     
-    win_len = 5
+    win_len = 4
     
     #            0          1         2         3       4        5         6
     colours = ["blue", "deeppink", "green", "orange", "white", "gray", "purple"]
