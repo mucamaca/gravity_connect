@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import tkinter as tk
+from copy import deepcopy
 
 from tile import Tile
 from core import Core
@@ -20,23 +21,18 @@ class GUI:
     c = 1
     def __init__(self):
         self.core = Core()
-        self.grid = self.core.grid
+        self.grid = deepcopy(self.core.grid)
         self.height, self.width = 400, 400
         self.tablesize = 10
         self.cellsize = 40
 
         self.colourmap = colourmap_read(0)
-        self.colour_list = config.colours 
+        self.colour_list = config.colours
         self.lock_click = False
-        self.root = tk.Tk()
-        self.root.title("Gravity Connect")
-
-        # indicates which player is on the move (0-n), special number for ai?
-        # no need for that as config has a special list called ai_players, 
-        # which also enables us to add more than one AI 
         self.turn = 0
 
-
+        self.root = tk.Tk()
+        self.root.title("Gravity Connect")
         self.make_canvas()
 
         self.root.mainloop()
@@ -69,19 +65,18 @@ class GUI:
                             i * self.cellsize, j * self.cellsize,
                             (i + 1) * self.cellsize,
                             (j + 1) * self.cellsize, fill=self.colourmap[j][i])
-                        return
+                        continue
                     self.map.create_rectangle(
                             i * self.cellsize, j * self.cellsize,
                             (i + 1) * self.cellsize,
                             (j + 1) * self.cellsize, fill=self.colour_list[self.grid[i][j].state])
-                        
+
 
     def mouse_click(self, event):
-        self.load_map()
         mouse_x = int(event.x // self.cellsize)
         mouse_y = int(event.y // self.cellsize)
 
-        if self.core.can_insert(mouse_x, mouse_y):
+        if self.core.can_insert(mouse_x, mouse_y) and not self.lock_click:
             self.place_token(mouse_x, mouse_y)
 
     def drop_token(self, x, y, pos):
@@ -102,6 +97,10 @@ class GUI:
             self.root.after(250, self.drop_token, x, y, pos)
         else:
             self.core.insert_token(*pos)
+            self.grid = deepcopy(self.core.grid)
+            self.load_map()
+            self.lock_click = False
+            self.turn = (self.turn + 1) % config.num_of_players
             if self.grid.check_win():
                self.game_end()
 
@@ -118,9 +117,6 @@ class GUI:
         pos = (pos[0], pos[1])
         self.lock_click = True
         self.drop_token(x, y, pos)
-        self.load_map()
-        self.lock_click = False
-        self.turn = (self.turn + 1) % config.num_of_players
 
     def game_end(self):
         self.end_screen = tk.Tk()
