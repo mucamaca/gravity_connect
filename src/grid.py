@@ -109,7 +109,6 @@ class Grid:
 
     def _count(self, p1, p2):
         """ Method that counts occurences of different states in a tuple """
-
         # -1 if p2[0]<p1[0]
         #  0 if p2[0]==p1[0]
         #  1 if p2[0]>p1[0]
@@ -123,11 +122,12 @@ class Grid:
         x, y = p1
         state_count = [0]*(config.num_of_players + 2)
         while (x, y) != p2:
+            state_count[self[x][y].state] += 1
             x+=dx
             y+=dy
-            state_count[self[x][y].state] += 1
         for i,j in enumerate(state_count):
             if j == config.win_len and i in Tile.PLAYERS:
+                print("meow")
                 return i
         return -1
 
