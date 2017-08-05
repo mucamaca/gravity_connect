@@ -66,12 +66,6 @@ class GUI:
                             (i + 1) * self.cellsize,
                             (j + 1) * self.cellsize, fill=self.colourmap[j][i])
                         continue
-                    if self.grid[i][j].state == Tile.BLOCKED:
-                        self.map.create_rectangle(
-                            i * self.cellsize, j * self.cellsize,
-                            (i + 1) * self.cellsize,
-                            (j + 1) * self.cellsize, fill=self.colour_list[6])
-                        continue
                     self.map.create_rectangle(
                             i * self.cellsize, j * self.cellsize,
                             (i + 1) * self.cellsize,
