@@ -22,8 +22,14 @@ class Core:
         and inserts it there. Returns True on success, False otherwise
         """
         if not self.can_insert(x, y):
-            return False
+            return -1
         tile = self.grid.get_token_pos(x, y)
         self.grid.update_tile(tile.x, tile.y, self.turn)
         self.turn = (self.turn+1) % config.num_of_players
-        return True
+        return int(self.check_for_gameover())
+
+    def check_for_gameover(self):
+        """ Checks for winning and tie situations in the current grid
+        and returns True if it found any of them, False otherwise
+        """
+        return self.grid.check_win() != -1 or self.grid.is_full()
