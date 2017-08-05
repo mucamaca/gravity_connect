@@ -28,16 +28,18 @@ class Grid:
         for x in range(config.x_size):
             self._grid.append([])
             for y in range(config.y_size):
-                if shape[x][y] is None:
+                # the x and y are switched intentionally here 
+                # because you can't read files column by column
+                if shape[y][x] is None:
                     self._grid[x].append(Tile(x, y, Tile.BLOCKED, None))
                     self._states_list[Tile.BLOCKED].append(self._grid[x][-1])
                     continue
-                self._grid[x].append(Tile(x, y, Tile.EMPTY, shape[x][y]))
+                self._grid[x].append(Tile(x, y, Tile.EMPTY, shape[y][x]))
                 self._states_list[Tile.EMPTY].append(self._grid[x][-1])
 
     def __iter__(self):
-    	for row in self._grid:
-    	    for tile in row:
+    	for col in self._grid:
+    	    for tile in col:
     	        yield tile
 
     def __getitem__(self, index):
@@ -55,13 +57,26 @@ class Grid:
     	    h += t * z**i
         return h
 
-    def get_token_pos(self, x, y):
+    def get_token_pos(self, *args):
         """ Returns the position where a token placed at coordinates
         specified by arguments x and y would end its path
         through the grid.
         """
-        while(self[x + self[x][y].dir[0]][y + self[x][y].dir[1]].state
-                != Tile.EMPTY):
+        if not 0 < len(args):
+            raise TypeError('Not enough aruments')
+        if not len(args) < 3:
+            raise TypeError('Too many arguments')
+
+        if len(args) == 1:
+            x = args[0][0]
+            y = args[0][1]
+        else:
+            x = args[0]
+            y = args[1]
+        
+        assert self[x][y].dir is not None
+        
+        while self[x][y].dir != (0, 0):
             x += self[x][y].dir[0]
             y += self[x][y].dir[1]
         return self[x][y]
