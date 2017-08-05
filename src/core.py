@@ -7,12 +7,13 @@ class Core:
         Tile.configure()
         self.grid = Grid()
         self.turn = 0
+        self.gameover = False
 
     def can_insert(self, x, y):
         """ Returns True if it is possible to put a token on self.grid[x][y],
         otherwise returns False
         """
-        if(self.grid[x][y].state == Tile.EMPTY):
+        if(self.grid[x][y].state == Tile.EMPTY and not self.gameover):
             return True
         return False
 
@@ -26,7 +27,8 @@ class Core:
         tile = self.grid.get_token_pos(x, y)
         self.grid.update_tile(tile.x, tile.y, self.turn)
         self.turn = (self.turn+1) % config.num_of_players
-        return int(self.check_for_gameover())
+        self.gameover = self.check_for_gameover()
+        return int(self.gameover)
 
     def check_for_gameover(self):
         """ Checks for winning and tie situations in the current grid
