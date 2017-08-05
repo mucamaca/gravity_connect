@@ -60,7 +60,7 @@ class GUI:
             # Draws the tokens and special fields:
             for i in range(self.tablesize):
                 for j in range(self.tablesize):
-                    if self.grid[i][j].state == Tile.EMPTY:
+                    if self.grid[i][j].state not in Tile.PLAYERS:
                         self.map.create_rectangle(
                             i * self.cellsize, j * self.cellsize,
                             (i + 1) * self.cellsize,
