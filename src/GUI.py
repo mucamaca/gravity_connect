@@ -2,10 +2,19 @@
 
 import tkinter as tk
 
+from tile import Tile
 from core import Core
 from gameconfig import config
 #from ai import minimax
 
+def colourmap_read(mode):
+    l = []
+    with open('../maps/'+str(mode)+'.colourmap') as f:
+        for line in f:
+            l.append([])
+            for c in line[:-1]:
+                l[-1].append(config.colours[int(c)])
+    return l
 
 class GUI:
     c = 1
@@ -16,9 +25,8 @@ class GUI:
         self.tablesize = 10
         self.cellsize = 40
 
-        self.colour_list = [config.colour_1, config.colour_2, config.colour_3,
-                config.colour_4, config.colour_bg, config.colour_special]
-
+        self.colourmap = colourmap_read(0)
+        self.colour_list = config.colours 
         self.lock_click = False
         self.root = tk.Tk()
         self.root.title("Gravity Connect")
@@ -56,12 +64,17 @@ class GUI:
             # Draws the tokens and special fields:
             for i in range(self.tablesize):
                 for j in range(self.tablesize):
-                    colour = self.colour_list[self.core.grid[i][j].state]
+                    if self.grid[i][j].state == Tile.EMPTY:
+                        self.map.create_rectangle(
+                            i * self.cellsize, j * self.cellsize,
+                            (i + 1) * self.cellsize,
+                            (j + 1) * self.cellsize, fill=self.colourmap[j][i])
+                        return
                     self.map.create_rectangle(
-                        i * self.cellsize, j * self.cellsize,
-                        (i + 1) * self.cellsize,
-                        (j + 1) * self.cellsize, fill=colour
-                    )
+                            i * self.cellsize, j * self.cellsize,
+                            (i + 1) * self.cellsize,
+                            (j + 1) * self.cellsize, fill=self.colour_list[self.grid[i][j].state])
+                        
 
     def mouse_click(self, event):
         self.load_map()

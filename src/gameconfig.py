@@ -7,13 +7,9 @@ class GameConfig:
     y_size = 10
     
     win_len = 5
-
-    colour_1 = "blue"
-    colour_2 = "deeppink"
-    colour_3 = "green"
-    colour_4 = "orange"
-    colour_bg = "gray"
-    colour_special = "white"
+    
+    #            0          1         2         3       4        5         6
+    colours = ["blue", "deeppink", "green", "orange", "white", "gray", "purple"]
 
     game_type = 0
 
