@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 
 import tkinter as tk
+
 from core import Core
 from gameconfig import config
 #from ai import minimax
@@ -15,13 +16,16 @@ class GUI:
         self.tablesize = 10
         self.cellsize = 40
 
-        self.colour_list = [config.colour_1, config.colour_2, config.colour_3, config.colour_4, config.colour_bg, config.colour_special]
+        self.colour_list = [config.colour_1, config.colour_2, config.colour_3,
+                config.colour_4, config.colour_bg, config.colour_special]
 
         self.lock_click = False
         self.root = tk.Tk()
         self.root.title("Gravity Connect")
 
         # indicates which player is on the move (0-n), special number for ai?
+        # no need for that as config has a special list called ai_players, 
+        # which also enables us to add more than one AI 
         self.turn = 0
 
 
@@ -67,16 +71,6 @@ class GUI:
         if self.core.can_insert(mouse_x, mouse_y):
             self.place_token(mouse_x, mouse_y)
 
-        # This block is for AI and is not part of v0.2.x
-        #
-        # if self.c %2:
-        #     self.lock_click = True
-        #     print("calculating...")
-        #     coords = minimax(self.core, self.turn, MAXDEPTH, 0, 0)
-        #     self.place_token(*coords)
-        # self.c += 1
-
-
     def drop_token(self, x, y, pos):
         move_dir = self.grid[x][y].dir
         # recursively drops the token
@@ -106,7 +100,6 @@ class GUI:
     #     else:
     #         return abs(x - pos[0])
 
-
     def place_token(self, x, y):
         pos = self.grid.get_token_pos(x, y)
         pos = (pos[0], pos[1])
@@ -115,7 +108,6 @@ class GUI:
         self.load_map()
         self.lock_click = False
         self.turn = (self.turn + 1) % config.num_of_players
-
 
     def game_end(self):
         self.end_screen = tk.Tk()
