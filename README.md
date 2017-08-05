@@ -3,7 +3,7 @@ A connect-4 like game
 
 ## How to run
 If running from source code, you will need Python 3 and tkinter library, which is probably bundled with you python installation.
-Simply run the main.py file and the game should work.
+Simply run the gravity_connect.py file and the game should work.
 
 ### When running on Windows 8 or Windows 10:
 When running windows binary builds of this game on Windows 8 or 10, windows smartscreen will probably block the program. To bypass this, click more info in the windows smartscreen dialog and a new button with something like "run anyway" on it will appear. Just click it and the program should start normally. If you are not admin, you will also need admin's password to do this.
