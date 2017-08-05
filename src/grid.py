@@ -93,15 +93,15 @@ class Grid:
         end = 0
         for i in range(config.x_size):
             for j in range(config.y_size):
-                if i + config.win_len < config.x_size:
+                if i + config.win_len <= config.x_size:
                     end = self._count((i, j), (i + config.win_len, j))
                     if end != -1:
                         return end
-                if j + config.win_len < config.y_size:
+                if j + config.win_len <= config.y_size:
                     end = self._count((i, j), (i, j + config.win_len))
                     if end != -1:
                         return end
-                if i + config.win_len < config.x_size and j + config.win_len < config.y_size:
+                if i + config.win_len <= config.x_size and j + config.win_len <= config.y_size:
                     end = self._count((i, j), (i + config.win_len, j + config.win_len))
                     if end != -1:
                         return end
@@ -118,6 +118,7 @@ class Grid:
         #  0 if p2[1]==p1[1]
         #  1 if p2[1]>p1[1]
         dy = (p2[1] - p1[1])//config.win_len
+        print(p2)
 
         x, y = p1
         state_count = [0]*(config.num_of_players + 2)
