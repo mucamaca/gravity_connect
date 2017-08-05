@@ -76,7 +76,9 @@ class Grid:
         
         assert self[x][y].dir is not None
         
-        while self[x][y].dir != (0, 0):
+        while(self[x][y].dir != (0, 0) 
+                and self[x + self[x][y].dir[0]][y + self[x][y].dir[1]].state
+                == Tile.EMPTY):
             x += self[x][y].dir[0]
             y += self[x][y].dir[1]
         return self[x][y]
