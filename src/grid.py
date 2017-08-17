@@ -124,7 +124,6 @@ class Grid:
         #  0 if p2[1]==p1[1]
         #  1 if p2[1]>p1[1]
         dy = (p2[1] - p1[1])//config.win_len
-        print(p2)
 
         x, y = p1
         state_count = [0]*(config.num_of_players + 2)
@@ -134,7 +133,6 @@ class Grid:
             y+=dy
         for i,j in enumerate(state_count):
             if j == config.win_len and i in Tile.PLAYERS:
-                print("meow")
                 return i
         return -1
 
@@ -143,6 +141,3 @@ class Grid:
         False otherwise
         """
         return not [tile.state for tile in self].count(Tile.EMPTY)
-    
-
-

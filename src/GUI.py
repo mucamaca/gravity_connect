@@ -97,7 +97,7 @@ class GUI:
 
             self.root.after(250, self.drop_token, x, y, pos)
         else:
-            if self.core.insert_token(*pos) == 1:
+            if self.core.insert_token(*pos) != -1:
                 self.game_end()
             self.grid = deepcopy(self.core.grid)
             self.load_map()

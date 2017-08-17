@@ -27,11 +27,93 @@ class Core:
         tile = self.grid.get_token_pos(x, y)
         self.grid.update_tile(tile.x, tile.y, self.turn)
         self.turn = (self.turn+1) % config.num_of_players
-        self.gameover = self.check_for_gameover()
-        return int(self.gameover)
+        self.gameover = self.end(x, y) 
+        return self.turn if self.gameover else -1
 
-    def check_for_gameover(self):
-        """ Checks for winning and tie situations in the current grid
-        and returns True if it found any of them, False otherwise
-        """
-        return self.grid.check_win() != -1 or self.grid.is_full()
+    # def check_for_gameover(self):
+    #     """ Checks for winning and tie situations in the current grid
+    #     and returns True if it found any of them, False otherwise
+    #     """
+    #     return self.grid.check_win() != -1 or self.grid.is_full()
+   
+    def end(self, x, y):
+        c_state = self.grid[x][y].state
+        found = 0
+        for i in range(1, 4):
+            if x + i > 9:
+                break
+            elif self.grid[x + i][y].state == c_state:
+                found +=1
+            else:
+                break
+        for i in range(1, 4):
+            if x - i < 0:
+                break
+            if self.grid[x - i][y].state == c_state:
+                found +=1
+            else:
+                break
+
+        if found > 2:
+            return True
+
+        found = 0
+
+        for i in range(1, 4):
+            if y + i > 9:
+                break
+            if self.grid[x][y + i].state == c_state:
+                found +=1
+            else:
+                break
+        for i in range(1, 4):
+            if y - i < 0:
+                break
+            if self.grid[x][y - i].state == c_state:
+                found +=1
+            else:
+                break
+
+        if found > 2:
+            return True
+
+        found = 0
+
+        for i in range(1, 4):
+            if x + i > 9 or y + i > 9:
+                break
+            if self.grid[x + i][y + i].state == c_state:
+                found += 1
+            else:
+                break
+        for i in range(1, 4):
+            if x - i < 0 or y - i < 0:
+                break
+            if self.grid[x - i][y - i].state == c_state:
+                found += 1
+            else:
+                break
+
+        if found > 2:
+            return True
+
+        found = 0
+        for i in range(1, 4):
+            if x + i > 9 or y - i < 0:
+                break
+            if self.grid[x + i][y - i].state == c_state:
+                found += 1
+            else:
+                break
+        for i in range(1, 4):
+            if x - i < 0 or y + i > 9:
+                break
+            if self.grid[x - i][y + i].state == c_state:
+                found += 1
+            else:
+                break
+
+        if found > 2:
+            return True
+
+        return False
