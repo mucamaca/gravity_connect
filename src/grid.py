@@ -42,6 +42,12 @@ class Grid:
     	    for tile in col:
     	        yield tile
 
+    def __repr__(self):
+        s = []
+        s.append(repr(self._states_list))
+        s.extend((repr(tile) for tile in self))
+        return ''.join(s)
+
     def __getitem__(self, index):
         return self._grid[index]
 
