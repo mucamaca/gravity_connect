@@ -20,10 +20,19 @@ class Grid:
     Grid.update_tile(x, y, new_state)
     """
 
-    def __init__(self):
+    def __init__(self, tiles=None):
         """ Grid object constructor. """
         self._grid = []
         self._states_list = [[] for i in range(config.num_of_players + 2)]
+        if tiles is not None:
+            for x in range(config.x_size):
+                self._grid.append([])
+                for y in range(config.y_size):
+                    self._grid[x].append(tiles[x*config.x_size + y])
+                    self._states_list[self._grid[x][y].state].append(self._grid[x][y])
+
+            return
+            
         shape = config.load_shape()
         for x in range(config.x_size):
             self._grid.append([])
@@ -43,9 +52,10 @@ class Grid:
     	        yield tile
 
     def __repr__(self):
-        s = []
-        s.append(repr(self._states_list))
-        s.extend((repr(tile) for tile in self))
+        s = ['Grid(tiles=[']
+        #s.append(repr(self._states_list))
+        s.append(','.join(repr(tile) for tile in self))
+        s.append('])')
         return ''.join(s)
 
     def __getitem__(self, index):

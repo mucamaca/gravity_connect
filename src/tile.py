@@ -13,7 +13,7 @@ class Tile:
         self.tup_list = []
     
     def __repr__(self):
-        return "Tile({tile.x!r}, {tile.y!r}, {tile.state!r}, {tile.dir!r})".format(self)
+        return "Tile({0.x!r},{0.y!r},{0.state!r},{0.dir!r})".format(self)
 
     def __eq__(self, other):
         return self.state == other.state
