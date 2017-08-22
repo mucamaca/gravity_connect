@@ -1,11 +1,16 @@
 from gameconfig import config
 from grid import Grid
 from tile import Tile
+import gamesave
+import sys
 
 class Core:
     def __init__(self):
         Tile.configure()
-        self.grid = Grid()
+        if len(sys.argv)>1 and sys.argv[1] == '-l':
+            self.grid = eval(gamesave.load_game_state())
+        else:
+            self.grid = Grid()
         self.turn = 0
         self.gameover = False
 
@@ -17,7 +22,6 @@ class Core:
             return True
         return False
 
-
     def insert_token(self, x, y):
         """ Checks where a token would fall when put in grid[x][y]
         and inserts it there. Returns True on success, False otherwise
@@ -28,6 +32,8 @@ class Core:
         self.grid.update_tile(tile.x, tile.y, self.turn)
         self.turn = (self.turn+1) % config.num_of_players
         self.gameover = self.end(x, y) 
+
+
         return self.turn if self.gameover else -1
 
     # def check_for_gameover(self):

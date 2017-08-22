@@ -18,6 +18,9 @@ class GameConfig:
     #      5       6        7      8      9
         (0, 1), (1, -1), (1, 0), (1, 1), None]
 
+    def __repr__(self):
+        pass
+
     def load_shape(self):
         shape = []
         with open("../maps/" + str(self.game_type) +'.mode') as conf:
