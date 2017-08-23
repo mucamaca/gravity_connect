@@ -33,9 +33,14 @@ class GUI:
 
         self.root = tk.Tk()
         self.root.title("Gravity Connect")
+        self.root.protocol("WM_DELETE_WINDOW", self.save)
         self.make_canvas()
 
         self.root.mainloop()
+
+    def save(self):
+        self.core.save()
+        self.root.destroy()
 
     def make_canvas(self):
         self.map = tk.Canvas(self.root, height=self.height, width=self.width)

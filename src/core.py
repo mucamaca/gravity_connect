@@ -8,11 +8,14 @@ class Core:
     def __init__(self):
         Tile.configure()
         if len(sys.argv)>1 and sys.argv[1] == '-l':
-            self.grid = eval(gamesave.load_game_state())
+            self.grid = eval(gamesave.load_game_state(gamesave.SAVEDIR+gamesave.LASTSAVE))
         else:
             self.grid = Grid()
         self.turn = 0
         self.gameover = False
+
+    def save(self):
+        gamesave.save_game_state(self.grid, gamesave.SAVEDIR+gamesave.LASTSAVE)
 
     def can_insert(self, x, y):
         """ Returns True if it is possible to put a token on self.grid[x][y],

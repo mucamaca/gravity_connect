@@ -1,11 +1,14 @@
 from gameconfig import config
 
+SAVEDIR = '../saves/'
+LASTSAVE = 'last.save'
+
 def save_game_state(grid, _file=None):
     if _file is None:
         print(repr(grid))
         return
     with open(_file, 'w') as f:
-        f.write(repr(config+repr(grid)))
+        f.write(repr(grid)+'\n')
 
 def load_game_state(_file=None):
     if _file is None:
@@ -16,6 +19,6 @@ def load_game_state(_file=None):
         except EOFError:
             return ''.join(l)
     with open(_file, 'r') as f:
-        return ''.join((line[:-1] for line in f))
+        return ''.join((line for line in f))
 
 

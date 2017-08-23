@@ -7,6 +7,10 @@
 # pycache folder
 __pycache__
 
+# local saved games
+saves
+*.save
+
 # vim recovery files
 *.swp
 
