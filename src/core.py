@@ -31,17 +31,30 @@ class Core:
         tile = self.grid.get_token_pos(x, y)
         self.grid.update_tile(tile.x, tile.y, self.turn)
         self.turn = (self.turn+1) % config.num_of_players
-        self.gameover = self.end(x, y) 
+        self.gameover = self.end(x, y)
 
 
         return self.turn if self.gameover else -1
+
+    def get_state_grid(self):
+        state_grid = []
+        for col in range(config.x_size):
+            state_grid.append([])
+            for tile in range(config.y_size):
+                state_grid[-1].append(0)
+        for tile in self.grid:
+            state_grid[tile.x][tile.y] = tile.state
+        return state_grid
+
+    def get_dir(self, x, y):
+        return self.grid[x][y].dir
 
     # def check_for_gameover(self):
     #     """ Checks for winning and tie situations in the current grid
     #     and returns True if it found any of them, False otherwise
     #     """
     #     return self.grid.check_win() != -1 or self.grid.is_full()
-   
+
     def end(self, x, y):
         c_state = self.grid[x][y].state
         found = 0
