@@ -3,6 +3,7 @@
 
 from gameconfig import config
 from tile import Tile
+from tup import Tup
 
 
 class Grid:
@@ -23,21 +24,22 @@ class Grid:
     def __init__(self, tiles=None):
         """ Grid object constructor. """
         self._grid = []
-        self._states_list = [[] for i in range(config.num_of_players + 2)]
+        self._states_list = [[] for i in
+                             range(config.num_of_players + 2)]
         if tiles is not None:
             for x in range(config.x_size):
                 self._grid.append([])
                 for y in range(config.y_size):
                     self._grid[x].append(tiles[x*config.x_size + y])
-                    self._states_list[self._grid[x][y].state].append(self._grid[x][y])
-
+                    self._states_list[self._grid[x][y].state].append(
+                        self._grid[x][y])
             return
-            
+
         shape = config.load_shape()
         for x in range(config.x_size):
             self._grid.append([])
             for y in range(config.y_size):
-                # the x and y are switched intentionally here 
+                # the x and y are switched intentionally here
                 # because you can't read files column by column
                 if shape[y][x] is None:
                     self._grid[x].append(Tile(x, y, Tile.BLOCKED, None))
@@ -45,6 +47,9 @@ class Grid:
                     continue
                 self._grid[x].append(Tile(x, y, Tile.EMPTY, shape[y][x]))
                 self._states_list[Tile.EMPTY].append(self._grid[x][-1])
+        for tup in self.tup_list():
+            for tile in tup:
+                tile.add_tup(tup)
 
     def __iter__(self):
     	for col in self._grid:
@@ -89,18 +94,15 @@ class Grid:
         else:
             x = args[0]
             y = args[1]
-        
+
         assert self[x][y].dir is not None
-        
-        while(self[x][y].dir != (0, 0) 
+
+        while(self[x][y].dir != (0, 0)
                 and self[x + self[x][y].dir[0]][y + self[x][y].dir[1]].state
                 == Tile.EMPTY):
             x += self[x][y].dir[0]
             y += self[x][y].dir[1]
         return self[x][y]
-
-    def update_tile(self, x, y, new_state):
-        self[x][y].state = new_state
 
     def check_win(self):
         """ Method that checks if any of the players won returns -1 if there
@@ -123,31 +125,40 @@ class Grid:
                         return end
         return -1
 
-    def _count(self, p1, p2):
-        """ Method that counts occurences of different states in a tuple """
-        # -1 if p2[0]<p1[0]
-        #  0 if p2[0]==p1[0]
-        #  1 if p2[0]>p1[0]
-        dx = (p2[0] - p1[0])//config.win_len
-
-        # -1 if p2[1]<p1[1]
-        #  0 if p2[1]==p1[1]
-        #  1 if p2[1]>p1[1]
-        dy = (p2[1] - p1[1])//config.win_len
-
-        x, y = p1
-        state_count = [0]*(config.num_of_players + 2)
-        while (x, y) != p2:
-            state_count[self[x][y].state] += 1
-            x+=dx
-            y+=dy
-        for i,j in enumerate(state_count):
-            if j == config.win_len and i in Tile.PLAYERS:
-                return i
-        return -1
-
     def is_full(self):
-        """ Returns True if there are no more empty tiles left, 
+        """ Returns True if there are no more empty tiles left,
         False otherwise
         """
         return not [tile.state for tile in self].count(Tile.EMPTY)
+
+    def tup_list(self):
+        """ A generator object that yields all the tuples of tiles of length
+        required to win that can be drawn on the current grid.
+        """
+
+        for i in range(config.x_size):
+            for j in range(config.y_size):
+                if i + config.win_len < config.x_size:
+                    yield Tup(self, (i, j), (i + config.win_len, j))
+                if j + config.win_len < config.y_size:
+                    yield Tup(self, (i, j), (i, j + config.win_len))
+                if i + config.win_len < config.x_size and j + config.win_len < config.y_size:
+                    yield Tup(self, (i, j), (i + config.win_len, j + config.win_len))
+
+    def update_tile(self, x, y, new_state):
+        """ Changes the state of the tile at position specified by arguments
+        x and y to state specified by new_state.
+
+        Updates the score of the current grid and the lists
+        containing tiles with the same state.
+        """
+        inv_dir = self[x][y].inverted_dir()
+        self[x + inv_dir[0]][y + inv_dir[1]].dir = 0
+        curr_state = grid[x][y].state
+        for i, tile in enumerate(self.states_list[curr_state]):
+            if tile.x == x and tile.y == y:
+                self.states_list[curr_state].pop(i)
+                break
+        self.states_list[player].append(self[x][y])
+        self.score += self[x][y].update(player)
+
